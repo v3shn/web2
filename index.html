@@ -1,775 +1,367 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vishnu Prasad - Portfolio</title>
+    <title>Vishnu Prasad - Professional Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
-        .professional-font {
+        /* * Professional Theme & Typography
+         * A cleaner, more focused design using a sophisticated color palette.
+         */
+        :root {
+            --primary-color: #3b82f6; /* Professional Blue */
+            --primary-hover: #2563eb;
+            --background-light: #f1f5f9; /* Slate 100 */
+            --background-dark: #0f172a;  /* Slate 900 */
+            --card-light: #ffffff;
+            --card-dark: #1e293b;       /* Slate 800 */
+            --text-light-primary: #0f172a;
+            --text-light-secondary: #475569; /* Slate 600 */
+            --text-dark-primary: #f8fafc;   /* Slate 50 */
+            --text-dark-secondary: #94a3b8;  /* Slate 400 */
+            --border-light: #e2e8f0; /* Slate 200 */
+            --border-dark: #334155;  /* Slate 700 */
+        }
+
+        .heading-font {
             font-family: 'Montserrat', sans-serif;
         }
 
+        .body-font {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
         .mono-font {
-            font-family: 'Space Mono', monospace;
+             font-family: 'Space Mono', monospace;
         }
 
-        /* Neon Blue/Cyan Theme */
-        .tech-bg-light {
-            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 25%, #80deea 50%, #4dd0e1 75%, #26c6da 100%);
-            background-size: 400% 400%;
-            animation: techGradient 12s ease infinite;
+        /* General Body Styling */
+        body {
+            background-color: var(--background-light);
+            color: var(--text-light-primary);
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        .tech-bg-dark {
-            background: linear-gradient(135deg, #0a1128 0%, #0d1b2a 25%, #1b263b 50%, #2a364a 75%, #354a5c 100%);
-            background-size: 400% 400%;
-            animation: techGradientDark 12s ease infinite;
+        body.dark {
+            background-color: var(--background-dark);
+            color: var(--text-dark-primary);
         }
 
-        @keyframes techGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes techGradientDark {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Theme Toggle */
-        .theme-toggle {
-            position: relative;
-            width: 80px;
-            height: 40px;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .theme-toggle.dark {
-            background: linear-gradient(135deg, #1e40af, #3b82f6);
-        }
-
-        .theme-toggle-slider {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            width: 32px;
-            height: 32px;
-            background: white;
-            border-radius: 50%;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .theme-toggle.dark .theme-toggle-slider {
-            transform: translateX(40px);
-            background: #1e293b;
-        }
-
-        .theme-icon {
-            font-size: 14px;
+        /* Card Styling - Clean & Minimal */
+        .professional-card {
+            background-color: var(--card-light);
+            border: 1px solid var(--border-light);
+            border-radius: 1rem; /* 16px */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             transition: all 0.3s ease;
         }
-
-        .theme-toggle .sun-icon {
-            color: #fbbf24;
+        
+        .professional-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
         }
 
-        .theme-toggle.dark .sun-icon {
-            opacity: 0;
-            transform: rotate(180deg);
+        body.dark .professional-card {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
         }
 
-        .theme-toggle .moon-icon {
-            opacity: 0;
-            transform: rotate(-180deg);
-            color: #60a5fa;
-        }
-
-        .theme-toggle.dark .moon-icon {
-            opacity: 1;
-            transform: rotate(0deg);
-        }
-
-        /* Floating animations */
-        .float-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .glass-card-dark {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Music Player */
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
-            z-index: 1000;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 212, 255, 0.3); /* Neon blue border */
-            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2);
-            cursor: grab; /* Change cursor for dragging */
-            transition: all 0.3s ease;
-        }
-
-        .music-player.dark {
-            border: 1px solid rgba(0, 255, 255, 0.3); /* Cyan border for dark mode */
-            box-shadow: 0 8px 32px rgba(0, 255, 255, 0.2);
-        }
-
-        .music-player.minimized {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .music-player.minimized .player-content {
-            display: none;
-        }
-
-        .music-player.minimized .mini-player {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .mini-player {
-            display: none;
-        }
-
-        .mini-player::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #00d4ff, #00ffff); /* Neon blue to cyan pulse */
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0; }
-        }
-
-        .music-player-toggle {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #00d4ff, #00ffff); /* Neon blue to cyan toggle */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1001;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
-        }
-
-        .music-player-toggle.hidden {
-            display: none;
-        }
-
-        .music-player-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(0, 212, 255, 0.6);
-        }
-
-        .progress-bar {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00d4ff, #00ffff); /* Neon blue to cyan progress */
-            width: 0%;
-            transition: width 0.1s ease;
-        }
-
-        .volume-slider {
-            width: 80px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
-            outline: none;
-            appearance: none;
-            cursor: pointer;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 12px;
-            height: 12px;
-            background: #00d4ff; /* Neon blue thumb */
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .volume-slider::-moz-range-thumb {
-            width: 12px;
-            height: 12px;
-            background: #00d4ff; /* Neon blue thumb */
-            border-radius: 50%;
-            cursor: pointer;
-            border: none;
-        }
-
-        .music-controls button {
-            transition: all 0.3s ease;
-        }
-
-        .music-controls button:hover {
-            transform: scale(1.1);
-        }
-
-        .equalizer {
-            display: flex;
-            align-items: end;
-            gap: 2px;
-            height: 20px;
-        }
-
-        .equalizer-bar {
-            width: 3px;
-            background: linear-gradient(to top, #00d4ff, #00ffff); /* Neon blue to cyan equalizer */
-            border-radius: 1px;
-            animation: equalizer 1s ease-in-out infinite;
-        }
-
-        .equalizer-bar:nth-child(1) { animation-delay: 0s; }
-        .equalizer-bar:nth-child(2) { animation-delay: 0.1s; }
-        .equalizer-bar:nth-child(3) { animation-delay: 0.2s; }
-        .equalizer-bar:nth-child(4) { animation-delay: 0.3s; }
-        .equalizer-bar:nth-child(5) { animation-delay: 0.4s; }
-
-        @keyframes equalizer {
-            0%, 100% { height: 5px; }
-            50% { height: 20px; }
-        }
-
-        /* Digital Clock */
-        .digital-clock {
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #00d4ff; /* Neon blue border */
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-family: 'Space Mono', monospace;
+        /* Button Styling */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
             font-weight: 600;
-            letter-spacing: 0.1em;
-        }
-
-        .digital-clock.dark {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #00ffff; /* Cyan border for dark mode */
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .music-player {
-                width: 300px;
-                bottom: 10px;
-                right: 10px;
-            }
-
-            .music-player-toggle {
-                bottom: 10px;
-                left: 10px;
-            }
-        }
-
-        /* Dragging styles */
-        .dragging {
-            opacity: 0.8;
-            transform: scale(0.95);
-            cursor: grabbing; /* Change cursor while dragging */
-        }
-
-        /* Smooth transitions */
-        * {
+            text-align: center;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        /* Professional button styling */
-        .professional-btn {
-            background: linear-gradient(45deg, #00d4ff, #00ffff); /* Neon blue to cyan button */
+        .btn-primary {
+            background-color: var(--primary-color);
             color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
-
-        .professional-btn:hover {
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
 
-        /* Age timer styling */
-        .age-display {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #00d4ff; /* Neon blue age display */
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        /* Theme Toggle Styling */
+        .theme-toggle {
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 9999px;
+            background-color: var(--border-light);
+            transition: background-color 0.3s ease;
+        }
+        
+        .dark .theme-toggle {
+            background-color: var(--border-dark);
         }
 
-        .age-display.dark {
-            color: #00ffff; /* Cyan age display for dark mode */
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        .theme-toggle i {
+            width: 1.5rem; /* 24px */
+            height: 1.5rem; /* 24px */
+            color: var(--text-light-secondary);
+            transition: color 0.3s ease;
         }
+
+        .dark .theme-toggle i {
+            color: var(--text-dark-secondary);
+        }
+
+        .theme-toggle .fa-moon { display: none; }
+        .dark .theme-toggle .fa-moon { display: inline-block; }
+        .dark .theme-toggle .fa-sun { display: none; }
+        
+        /* Section Heading */
+        .section-heading {
+             position: relative;
+             display: inline-block;
+             margin-bottom: 2rem;
+             padding-bottom: 0.5rem;
+             font-size: 2.25rem; /* 36px */
+             font-weight: 700;
+        }
+
+        .section-heading::after {
+             content: '';
+             position: absolute;
+             bottom: 0;
+             left: 50%;
+             transform: translateX(-50%);
+             width: 60%;
+             height: 4px;
+             border-radius: 2px;
+             background-color: var(--primary-color);
+        }
+        
+        /* Subtle fade-in animation for sections */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
     </style>
 </head>
-<body class="min-h-screen transition-all duration-500 professional-font tech-bg-light">
-    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-gray-700/20">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-xl font-bold text-gray-800 dark:text-white">
-                vishnu.kl29
-            </div>
+<body class="body-font">
 
-            <div class="flex items-center">
+    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold heading-font text-slate-800 dark:text-white">
+                Vishnu Prasad
+            </a>
+            <div class="flex items-center space-x-6">
+                <a href="#about" class="hidden md:inline text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 font-medium transition-colors">About</a>
+                <a href="#skills" class="hidden md:inline text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 font-medium transition-colors">Skills</a>
+                <a href="#portfolio" class="hidden md:inline text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 font-medium transition-colors">Portfolio</a>
+                <a href="#contact" class="hidden md:inline text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 font-medium transition-colors">Contact</a>
                 <div id="themeToggle" class="theme-toggle">
-                    <div class="theme-toggle-slider">
-                        <i class="fas fa-sun theme-icon sun-icon"></i>
-                        <i class="fas fa-moon theme-icon moon-icon"></i>
-                    </div>
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
                 </div>
             </div>
-
-            <div class="text-right">
-                <div id="clock" class="digital-clock text-cyan-400"></div>
-                <div id="date" class="mono-font text-sm text-cyan-500 mt-1"></div>
-            </div>
-        </div>
+        </nav>
     </header>
 
-    <main class="pt-24 relative z-10">
-        <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
-            <div class="text-center z-10 max-w-4xl mx-auto px-4">
-                <div class="float-animation">
-                    <h1 class="text-6xl md:text-8xl font-bold text-gray-800 dark:text-white mb-4">
-                        Vishnu Prasad
-                    </h1>
-                    <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 font-medium">
-                        Self Learner 📚 || WebDesigning 🎨 || Tech Enthusiast 💻
-                    </p>
+    <main class="pt-24">
+        
+        <section id="hero" class="min-h-[calc(100vh-6rem)] flex items-center">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-5xl md:text-7xl font-extrabold heading-font text-slate-800 dark:text-white mb-4">
+                    Vishnu Prasad
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
+                    Self Learner <span class="text-blue-500">|</span> Web Designer <span class="text-blue-500">|</span> Tech Enthusiast
+                </p>
+                <div class="space-x-4">
+                    <a href="#portfolio" class="btn btn-primary">View My Work</a>
+                    <a href="https://wa.me/916235989299" target="_blank" class="btn btn-secondary">Get In Touch</a>
                 </div>
-
-                <div class="glass-card glass-card-dark rounded-2xl p-6 mb-8 float-animation">
-                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">⏰ Live Age Timer</h3>
-                    <div id="ageTimer" class="age-display"></div>
-                </div>
-            </div>
-
-            <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-cyan-400/20 rounded-full blur-xl animate-bounce"></div>
-                <div class="absolute top-3/4 right-1/4 w-24 h-24 bg-teal-400/20 rounded-full blur-xl animate-pulse"></div>
-                <div class="absolute bottom-1/4 left-1/3 w-40 h-40 bg-blue-400/20 rounded-full blur-xl animate-ping"></div>
-                <div class="absolute top-1/3 right-1/5 w-20 h-20 bg-blue-500/15 rounded-lg rotate-45 blur-lg animate-spin-slow"></div>
-                <div class="absolute bottom-1/5 left-1/5 w-28 h-28 bg-cyan-500/15 rounded-full blur-lg animate-pulse-slow"></div>
             </div>
         </section>
 
-        <section class="py-20 px-4 relative z-10">
+        <section id="about" class="py-20 px-6 fade-in-section">
             <div class="container mx-auto max-w-4xl">
-                <div class="glass-card glass-card-dark rounded-2xl p-8 mb-12">
-                    <h2 class="text-4xl font-bold text-gray-800 dark:text-white mb-6 text-center">About Me</h2>
-                    <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
-                        My name is Vishnu Prasad. I'm from Kayamkulam, Kerala 🇮🇳. I completed my Diploma in Mechanical Engineering from Carmel Polytechnic College, Alappuzha and worked at Hyundai Suzee in Tenkasi, Tamil Nadu. Currently, I am pursuing B.Sc. in Computer Science at College of Applied Science, Karthikapally. My hobbies include travelling, listening to music, and coding.
+                <div class="professional-card p-8 md:p-12">
+                    <h2 class="section-heading mx-auto text-center">About Me</h2>
+                    <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed text-center">
+                        I'm Vishnu Prasad, a <span id="age" class="font-bold text-slate-700 dark:text-slate-200"></span>-year-old tech enthusiast from Kayamkulam, Kerala 🇮🇳. After completing my Diploma in Mechanical Engineering and gaining industry experience, my passion for technology led me to pursue a B.Sc. in Computer Science. I am driven by a love for learning, coding, and creating intuitive, beautiful user experiences.
                     </p>
                 </div>
             </div>
         </section>
 
-        <section class="py-20 px-4 relative z-10">
-            <div class="container mx-auto max-w-4xl">
-                <div class="glass-card glass-card-dark rounded-2xl p-8 mb-12">
-                    <h2 class="text-4xl font-bold text-gray-800 dark:text-white mb-6 text-center">Portfolio</h2>
-                    <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
-                        Code and design has always been my passion. I seem to do more UI/UX and techwear design. But I also try many other styles besides that, such as typography, anti-design, streetwear, and others. My tech stacks are Node.js, HTML, CSS, JavaScript, TypeScript, SQL, and SAP. Currently I'm learning Tailwind CSS, Next.js, and React.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-20 px-4 relative z-10">
-            <div class="container mx-auto max-w-4xl">
-                <div class="glass-card glass-card-dark rounded-2xl p-8 mb-12">
-                    <h2 class="text-4xl font-bold text-gray-800 dark:text-white mb-8 text-center">Reach Me</h2>
-                    <div class="flex justify-center space-x-8">
-                        <a href="https://wa.me/916235989299" target="_blank" class="flex flex-col items-center group">
-                            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-2 group-hover:bg-green-600 transition-all transform group-hover:scale-110">
-                                <i class="fab fa-whatsapp text-white text-2xl"></i>
-                            </div>
-                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-green-500 transition-colors font-medium">WhatsApp</span>
-                        </a>
-
-                        <a href="https://instagram.com/v3shn" target="_blank" class="flex flex-col items-center group">
-                            <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-2 group-hover:from-purple-600 group-hover:to-pink-600 transition-all transform group-hover:scale-110">
-                                <i class="fab fa-instagram text-white text-2xl"></i>
-                            </div>
-                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-pink-500 transition-colors font-medium">Instagram</span>
-                        </a>
-
-                        <a href="https://github.com/v3shn" target="_blank" class="flex flex-col items-center group">
-                            <div class="w-16 h-16 bg-gray-800 dark:bg-gray-600 rounded-full flex items-center justify-center mb-2 group-hover:bg-gray-900 dark:group-hover:bg-gray-500 transition-all transform group-hover:scale-110">
-                                <i class="fab fa-github text-white text-2xl"></i>
-                            </div>
-                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-gray-800 dark:group-hover:text-gray-400 transition-colors font-medium">GitHub</span>
-                        </a>
+        <section id="skills" class="py-20 px-6 bg-slate-50 dark:bg-slate-900/70 fade-in-section">
+            <div class="container mx-auto max-w-5xl">
+                <h2 class="section-heading mx-auto text-center">Technical Skills</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div class="skill-category">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-500">Frontend</h3>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">HTML & CSS</p>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">JavaScript</p>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">Tailwind CSS</p>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">React (Learning)</p>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">Next.js (Learning)</p>
                     </div>
+                    <div class="skill-category">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-500">Backend</h3>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">Node.js</p>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">TypeScript</p>
+                    </div>
+                    <div class="skill-category">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-500">Databases</h3>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">SQL</p>
+                    </div>
+                    <div class="skill-category">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-500">Other Tools</h3>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">SAP</p>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">Git & GitHub</p>
+                        <p class="mono-font text-slate-600 dark:text-slate-400">UI/UX Design</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="portfolio" class="py-20 px-6 fade-in-section">
+            <div class="container mx-auto max-w-5xl">
+                <h2 class="section-heading mx-auto text-center">Portfolio</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="professional-card overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">Portfolio Website</h3>
+                            <p class="text-slate-600 dark:text-slate-400 mb-4">The very site you're on now. A responsive, professional portfolio built from scratch to showcase my skills in web design and development.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">HTML</span>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">TailwindCSS</span>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">JavaScript</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <a href="https://github.com/v3shn" target="_blank" class="text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"><i class="fab fa-github fa-lg mr-1"></i> Code</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="professional-card overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">E-commerce UI Concept</h3>
+                            <p class="text-slate-600 dark:text-slate-400 mb-4">A modern and clean user interface design for a conceptual e-commerce store, focusing on user experience and visual appeal.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">Figma</span>
+                                <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">UI/UX Design</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <a href="#" class="text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"><i class="fab fa-figma fa-lg mr-1"></i> View Design</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 px-6 bg-slate-50 dark:bg-slate-900/70 fade-in-section">
+            <div class="container mx-auto max-w-4xl text-center">
+                <h2 class="section-heading mx-auto">Get In Touch</h2>
+                <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
+                    I'm always open to discussing new projects or opportunities. Feel free to reach out.
+                </p>
+                <div class="flex justify-center items-center space-x-6 md:space-x-8">
+                    <a href="https://wa.me/916235989299" target="_blank" class="text-green-500 hover:text-green-600 transition-colors" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp fa-3x"></i>
+                    </a>
+                    <a href="https://instagram.com/v3shn" target="_blank" class="text-pink-500 hover:text-pink-600 transition-colors" aria-label="Instagram">
+                        <i class="fab fa-instagram fa-3x"></i>
+                    </a>
+                    <a href="https://github.com/v3shn" target="_blank" class="text-slate-700 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors" aria-label="GitHub">
+                        <i class="fab fa-github fa-3x"></i>
+                    </a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="py-8 text-center border-t border-white/20 dark:border-gray-700/20 relative z-10">
-        <p class="text-gray-600 dark:text-gray-400 font-medium">
-            © 2025 Vishnu Prasad. All rights reserved. Made with ❤️ and lots of ☕
-        </p>
+    <footer class="py-8 border-t border-slate-200 dark:border-slate-800">
+        <div class="container mx-auto px-6 text-center text-slate-500 dark:text-slate-400">
+            <p>&copy; 2025 Vishnu Prasad. All Rights Reserved.</p>
+        </div>
     </footer>
 
-    <div id="musicPlayerToggle" class="music-player-toggle">
-        <i class="fas fa-music text-white text-xl"></i>
-    </div>
-
-    <div id="musicPlayer" class="music-player glass-card glass-card-dark rounded-2xl p-4 hidden">
-        <div class="mini-player">
-            <button id="miniPlayPause" class="text-cyan-400 hover:text-cyan-300 transition-colors relative z-10">
-                <i class="fas fa-play text-xl"></i>
-            </button>
-        </div>
-
-        <div class="player-content">
-            <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center space-x-2">
-                    <div class="equalizer" id="equalizer">
-                        <div class="equalizer-bar"></div>
-                        <div class="equalizer-bar"></div>
-                        <div class="equalizer-bar"></div>
-                        <div class="equalizer-bar"></div>
-                        <div class="equalizer-bar"></div>
-                    </div>
-                    <div class="text-xs text-gray-300 font-medium">
-                        <i class="fas fa-music mr-1"></i>
-                        Now Playing
-                    </div>
-                </div>
-                <div class="flex space-x-2">
-                    <button id="minimizeBtn" class="text-gray-400 hover:text-white transition-colors">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button id="closeBtn" class="text-gray-400 hover:text-red-400 transition-colors">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <h4 class="text-sm font-semibold text-white truncate">фрози (frozy) - Parano</h4>
-                <p class="text-xs text-gray-300 truncate">Parano</p>
-            </div>
-
-            <div class="mb-3">
-                <div class="progress-bar mb-1">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="flex justify-between text-xs text-gray-400 mono-font">
-                    <span id="currentTime">0:00</span>
-                    <span id="totalTime">0:00</span>
-                </div>
-            </div>
-
-            <div class="music-controls flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <button id="prevBtn" class="text-gray-400 hover:text-cyan-400 transition-colors">
-                        <i class="fas fa-step-backward"></i>
-                    </button>
-                    <button id="playPauseBtn" class="w-8 h-8 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 rounded-full flex items-center justify-center text-white transition-all">
-                        <i class="fas fa-play text-sm"></i>
-                    </button>
-                    <button id="nextBtn" class="text-gray-400 hover:text-cyan-400 transition-colors">
-                        <i class="fas fa-step-forward"></i>
-                    </button>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-volume-down text-gray-400 text-xs"></i>
-                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="70">
-                    <i class="fas fa-volume-up text-gray-400 text-xs"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <audio id="audioPlayer" preload="metadata">
-        <source src="https://raw.githubusercontent.com/v3shn/chin/main/assets/away1.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-
     <script>
-        // Theme Management
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Theme Management ---
+            const themeToggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
 
-        // Check for saved theme preference or default to light
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        if (savedTheme === 'dark') {
-            body.classList.add('dark', 'tech-bg-dark');
-            body.classList.remove('tech-bg-light');
-            themeToggle.classList.add('dark');
-        } else {
-            body.classList.remove('dark', 'tech-bg-dark');
-            body.classList.add('tech-bg-light');
-            themeToggle.classList.remove('dark');
-        }
+            // Apply saved theme on page load
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.classList.toggle('dark', savedTheme === 'dark');
 
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark');
-            themeToggle.classList.toggle('dark');
-            if (body.classList.contains('dark')) {
-                body.classList.add('tech-bg-dark');
-                body.classList.remove('tech-bg-light');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.add('tech-bg-light');
-                body.classList.remove('tech-bg-dark');
-                localStorage.setItem('theme', 'light');
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark');
+                const isDarkMode = document.body.classList.contains('dark');
+                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            });
+
+            // --- Age Calculation ---
+            // A simple, professional age display. No need for a tick-by-tick timer.
+            function calculateAge() {
+                const birthDate = new Date('2000-11-18');
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                const ageEl = document.getElementById('age');
+                if (ageEl) {
+                    ageEl.textContent = age;
+                }
             }
+            calculateAge();
+            
+            // --- Fade-in Section on Scroll ---
+            // A subtle animation to make the page feel more dynamic.
+            const sections = document.querySelectorAll('.fade-in-section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Optional: stop observing once visible
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.15 // Section becomes visible when 15% is in view
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
         });
-
-        // Digital Clock
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('date').textContent = now.toLocaleDateString(undefined, options);
-        }
-        setInterval(updateClock, 1000);
-        updateClock(); // Initial call
-
-        // Age Timer
-        function updateAge() {
-            const birthDate = new Date('2002-09-17T00:00:00'); // Vishnu Prasad's birth date
-            const now = new Date();
-            let ageInMilliseconds = now - birthDate;
-
-            const seconds = Math.floor(ageInMilliseconds / 1000);
-            const minutes = Math.floor(seconds / 60);
-            const hours = Math.floor(minutes / 60);
-            const days = Math.floor(hours / 24);
-            const years = now.getFullYear() - birthDate.getFullYear();
-
-            // Calculate remaining months and days
-            birthDate.setFullYear(now.getFullYear());
-            let months = now.getMonth() - birthDate.getMonth();
-            let remainingDays = now.getDate() - birthDate.getDate();
-
-            if (remainingDays < 0) {
-                months--;
-                remainingDays += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); // Days in previous month
-            }
-            if (months < 0) {
-                months += 12;
-            }
-
-            // Calculate precise seconds, minutes, hours after years, months, days
-            const tempDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), birthDate.getHours(), birthDate.getMinutes(), birthDate.getSeconds());
-            ageInMilliseconds = now - tempDate;
-
-            const totalSeconds = Math.floor(ageInMilliseconds / 1000);
-            const displaySeconds = totalSeconds % 60;
-            const displayMinutes = Math.floor(totalSeconds / 60) % 60;
-            const displayHours = Math.floor(totalSeconds / 3600) % 24;
-
-            document.getElementById('ageTimer').textContent =
-                `${years} years, ${months} months, ${remainingDays} days, ${displayHours} hours, ${displayMinutes} minutes, ${displaySeconds} seconds`;
-        }
-        setInterval(updateAge, 1000);
-        updateAge(); // Initial call
-
-        // Music Player Logic
-        const musicPlayer = document.getElementById('musicPlayer');
-        const musicPlayerToggle = document.getElementById('musicPlayerToggle');
-        const minimizeBtn = document.getElementById('minimizeBtn');
-        const closeBtn = document.getElementById('closeBtn');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const miniPlayPause = document.getElementById('miniPlayPause');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const audioPlayer = document.getElementById('audioPlayer');
-        const progressFill = document.getElementById('progressFill');
-        const currentTimeSpan = document.getElementById('currentTime');
-        const totalTimeSpan = document.getElementById('totalTime');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const equalizer = document.getElementById('equalizer');
-
-        let isPlaying = false;
-        let isMinimized = true; // Start minimized
-        let isDragging = false;
-        let offset = { x: 0, y: 0 };
-
-        // Hide music player initially and show toggle button
-        musicPlayer.classList.add('hidden');
-        musicPlayerToggle.classList.remove('hidden');
-
-        musicPlayerToggle.addEventListener('click', () => {
-            musicPlayer.classList.remove('hidden');
-            musicPlayerToggle.classList.add('hidden');
-            musicPlayer.classList.remove('minimized');
-            isMinimized = false;
-        });
-
-        minimizeBtn.addEventListener('click', () => {
-            musicPlayer.classList.add('minimized');
-            isMinimized = true;
-            // Ensure mini play/pause icon is correct
-            miniPlayPause.innerHTML = isPlaying ? '<i class="fas fa-pause text-xl"></i>' : '<i class="fas fa-play text-xl"></i>';
-        });
-
-        closeBtn.addEventListener('click', () => {
-            audioPlayer.pause();
-            isPlaying = false;
-            playPauseBtn.innerHTML = '<i class="fas fa-play text-sm"></i>';
-            musicPlayer.classList.add('hidden');
-            musicPlayerToggle.classList.remove('hidden');
-            musicPlayer.classList.remove('minimized'); // Reset state
-            isMinimized = true; // Reset state
-        });
-
-        playPauseBtn.addEventListener('click', togglePlayPause);
-        miniPlayPause.addEventListener('click', togglePlayPause);
-
-        function togglePlayPause() {
-            if (isPlaying) {
-                audioPlayer.pause();
-                playPauseBtn.innerHTML = '<i class="fas fa-play text-sm"></i>';
-                miniPlayPause.innerHTML = '<i class="fas fa-play text-xl"></i>';
-                equalizer.style.display = 'none'; // Hide equalizer when paused
-            } else {
-                audioPlayer.play();
-                playPauseBtn.innerHTML = '<i class="fas fa-pause text-sm"></i>';
-                miniPlayPause.innerHTML = '<i class="fas fa-pause text-xl"></i>';
-                equalizer.style.display = 'flex'; // Show equalizer when playing
-            }
-            isPlaying = !isPlaying;
-        }
-
-        audioPlayer.addEventListener('timeupdate', () => {
-            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-            progressFill.style.width = `${progress}%`;
-            currentTimeSpan.textContent = formatTime(audioPlayer.currentTime);
-        });
-
-        audioPlayer.addEventListener('loadedmetadata', () => {
-            totalTimeSpan.textContent = formatTime(audioPlayer.duration);
-            audioPlayer.volume = volumeSlider.value / 100; // Set initial volume
-        });
-
-        function formatTime(seconds) {
-            const min = Math.floor(seconds / 60);
-            const sec = Math.floor(seconds % 60);
-            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
-        }
-
-        volumeSlider.addEventListener('input', (e) => {
-            audioPlayer.volume = e.target.value / 100;
-        });
-
-        // Make progress bar clickable to seek
-        document.querySelector('.progress-bar').addEventListener('click', (e) => {
-            const progressBar = e.currentTarget;
-            const clickX = e.clientX - progressBar.getBoundingClientRect().left;
-            const percentage = clickX / progressBar.offsetWidth;
-            audioPlayer.currentTime = audioPlayer.duration * percentage;
-        });
-
-        // Drag functionality for the music player
-        musicPlayer.addEventListener('mousedown', (e) => {
-            if (!isMinimized) { // Only allow dragging when not minimized
-                isDragging = true;
-                musicPlayer.classList.add('dragging');
-                offset.x = e.clientX - musicPlayer.getBoundingClientRect().left;
-                offset.y = e.clientY - musicPlayer.getBoundingClientRect().top;
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-            }
-        });
-
-        function onMouseMove(e) {
-            if (isDragging) {
-                let newX = e.clientX - offset.x;
-                let newY = e.clientY - offset.y;
-
-                // Keep player within viewport
-                newX = Math.max(0, Math.min(newX, window.innerWidth - musicPlayer.offsetWidth));
-                newY = Math.max(0, Math.min(newY, window.innerHeight - musicPlayer.offsetHeight));
-
-                musicPlayer.style.left = `${newX}px`;
-                musicPlayer.style.top = `${newY}px`;
-                musicPlayer.style.right = 'auto'; // Disable right/bottom if setting left/top
-                musicPlayer.style.bottom = 'auto';
-            }
-        }
-
-        function onMouseUp() {
-            isDragging = false;
-            musicPlayer.classList.remove('dragging');
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        }
     </script>
 </body>
 </html>
