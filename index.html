@@ -1,367 +1,276 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vishnu Prasad - Professional Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Vishnu Prasad - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
-
-        /* * Professional Theme & Typography
-         * A cleaner, more focused design using a sophisticated color palette.
-         */
         :root {
-            --primary-color: #3b82f6; /* Professional Blue */
-            --primary-hover: #2563eb;
-            --background-light: #f1f5f9; /* Slate 100 */
-            --background-dark: #0f172a;  /* Slate 900 */
-            --card-light: #ffffff;
-            --card-dark: #1e293b;       /* Slate 800 */
-            --text-light-primary: #0f172a;
-            --text-light-secondary: #475569; /* Slate 600 */
-            --text-dark-primary: #f8fafc;   /* Slate 50 */
-            --text-dark-secondary: #94a3b8;  /* Slate 400 */
-            --border-light: #e2e8f0; /* Slate 200 */
-            --border-dark: #334155;  /* Slate 700 */
+            --background: #000000;
+            --foreground: #ffffff;
+            --secondary-text: #a1a1a1;
+            --border: #333333;
+            --link: #007bff;
+            --link-hover: #ffffff;
         }
 
-        .heading-font {
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .body-font {
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .mono-font {
-             font-family: 'Space Mono', monospace;
-        }
-
-        /* General Body Styling */
         body {
-            background-color: var(--background-light);
-            color: var(--text-light-primary);
-            transition: background-color 0.5s ease, color 0.5s ease;
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        body.dark {
-            background-color: var(--background-dark);
-            color: var(--text-dark-primary);
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
-        /* Card Styling - Clean & Minimal */
-        .professional-card {
-            background-color: var(--card-light);
-            border: 1px solid var(--border-light);
-            border-radius: 1rem; /* 16px */
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            transition: all 0.3s ease;
+        header, footer, section {
+            margin-bottom: 4rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .header-left .name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .header-left .status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary-text);
         }
         
-        .professional-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #28a745; /* Green dot for available */
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
 
-        body.dark .professional-card {
-            background-color: var(--card-dark);
-            border-color: var(--border-dark);
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
         }
 
-        /* Button Styling */
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
+        .header-right {
+            text-align: right;
+            color: var(--secondary-text);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--foreground);
+        }
+
+        .section-title::before {
+            content: '>';
+            margin-right: 0.75rem;
+            color: var(--link);
+        }
+
+        p, ul {
+            color: var(--secondary-text);
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--link);
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            border-bottom-color: var(--link-hover);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--foreground);
+        }
+        
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .card .tech-stack span {
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .contact-links a {
+            margin-right: 1.5rem;
+            border-bottom: none;
+        }
+        
+        .footer-text {
+            color: var(--secondary-text);
             text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
         }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-        }
-        
-        .btn-secondary {
-            background-color: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .btn-secondary:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        /* Theme Toggle Styling */
-        .theme-toggle {
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 9999px;
-            background-color: var(--border-light);
-            transition: background-color 0.3s ease;
-        }
-        
-        .dark .theme-toggle {
-            background-color: var(--border-dark);
-        }
-
-        .theme-toggle i {
-            width: 1.5rem; /* 24px */
-            height: 1.5rem; /* 24px */
-            color: var(--text-light-secondary);
-            transition: color 0.3s ease;
-        }
-
-        .dark .theme-toggle i {
-            color: var(--text-dark-secondary);
-        }
-
-        .theme-toggle .fa-moon { display: none; }
-        .dark .theme-toggle .fa-moon { display: inline-block; }
-        .dark .theme-toggle .fa-sun { display: none; }
-        
-        /* Section Heading */
-        .section-heading {
-             position: relative;
-             display: inline-block;
-             margin-bottom: 2rem;
-             padding-bottom: 0.5rem;
-             font-size: 2.25rem; /* 36px */
-             font-weight: 700;
-        }
-
-        .section-heading::after {
-             content: '';
-             position: absolute;
-             bottom: 0;
-             left: 50%;
-             transform: translateX(-50%);
-             width: 60%;
-             height: 4px;
-             border-radius: 2px;
-             background-color: var(--primary-color);
-        }
-        
-        /* Subtle fade-in animation for sections */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
     </style>
 </head>
-<body class="body-font">
-
-    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold heading-font text-slate-800 dark:text-white">
-                Vishnu Prasad
-            </a>
-            <div class="flex items-center space-x-6">
-                <a href="#about" class="hidden md:inline text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 font-medium transition-colors">About</a>
-                <a href="#skills" class="hidden md:inline text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 font-medium transition-colors">Skills</a>
-                <a href="#portfolio" class="hidden md:inline text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 font-medium transition-colors">Portfolio</a>
-                <a href="#contact" class="hidden md:inline text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 font-medium transition-colors">Contact</a>
-                <div id="themeToggle" class="theme-toggle">
-                    <i class="fas fa-sun"></i>
-                    <i class="fas fa-moon"></i>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <h1 class="name">Vishnu Prasad</h1>
+                <div class="status">
+                    <span class="status-indicator"></span>
+                    <span>Available for work</span>
                 </div>
             </div>
-        </nav>
-    </header>
+            <div class="header-right">
+                <div id="clock">00:00:00</div>
+                <div>IST (UTC+5:30)</div>
+            </div>
+        </header>
 
-    <main class="pt-24">
-        
-        <section id="hero" class="min-h-[calc(100vh-6rem)] flex items-center">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-5xl md:text-7xl font-extrabold heading-font text-slate-800 dark:text-white mb-4">
-                    Vishnu Prasad
-                </h1>
-                <p class="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
-                    Self Learner <span class="text-blue-500">|</span> Web Designer <span class="text-blue-500">|</span> Tech Enthusiast
+        <main>
+            <section id="about">
+                <h2 class="section-title">About</h2>
+                <p>
+                    I'm Vishnu, a <span id="age"></span>-year-old tech enthusiast from Kerala, India. My journey began with Mechanical Engineering and has now led me to the world of Computer Science. I am passionate about self-learning, coding, and designing clean, functional web experiences.
                 </p>
-                <div class="space-x-4">
-                    <a href="#portfolio" class="btn btn-primary">View My Work</a>
-                    <a href="https://wa.me/916235989299" target="_blank" class="btn btn-secondary">Get In Touch</a>
-                </div>
-            </div>
-        </section>
+            </section>
+            
+            <section id="stack">
+                <h2 class="section-title">Stack</h2>
+                <p>
+                    I have experience with a range of technologies and I am always eager to learn more. Here are some of the tools and languages I work with:
+                </p>
+                <ul>
+                    <li>- Frontend: HTML, CSS, JavaScript, Tailwind CSS</li>
+                    <li>- Backend: Node.js, TypeScript</li>
+                    <li>- Databases: SQL</li>
+                    <li>- Others: SAP, Git, UI/UX Design</li>
+                    <li>- Learning: React, Next.js</li>
+                </ul>
+            </section>
 
-        <section id="about" class="py-20 px-6 fade-in-section">
-            <div class="container mx-auto max-w-4xl">
-                <div class="professional-card p-8 md:p-12">
-                    <h2 class="section-heading mx-auto text-center">About Me</h2>
-                    <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed text-center">
-                        I'm Vishnu Prasad, a <span id="age" class="font-bold text-slate-700 dark:text-slate-200"></span>-year-old tech enthusiast from Kayamkulam, Kerala 🇮🇳. After completing my Diploma in Mechanical Engineering and gaining industry experience, my passion for technology led me to pursue a B.Sc. in Computer Science. I am driven by a love for learning, coding, and creating intuitive, beautiful user experiences.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills" class="py-20 px-6 bg-slate-50 dark:bg-slate-900/70 fade-in-section">
-            <div class="container mx-auto max-w-5xl">
-                <h2 class="section-heading mx-auto text-center">Technical Skills</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <div class="skill-category">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-500">Frontend</h3>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">HTML & CSS</p>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">JavaScript</p>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">Tailwind CSS</p>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">React (Learning)</p>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">Next.js (Learning)</p>
-                    </div>
-                    <div class="skill-category">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-500">Backend</h3>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">Node.js</p>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">TypeScript</p>
-                    </div>
-                    <div class="skill-category">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-500">Databases</h3>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">SQL</p>
-                    </div>
-                    <div class="skill-category">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-500">Other Tools</h3>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">SAP</p>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">Git & GitHub</p>
-                        <p class="mono-font text-slate-600 dark:text-slate-400">UI/UX Design</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="portfolio" class="py-20 px-6 fade-in-section">
-            <div class="container mx-auto max-w-5xl">
-                <h2 class="section-heading mx-auto text-center">Portfolio</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="professional-card overflow-hidden">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">Portfolio Website</h3>
-                            <p class="text-slate-600 dark:text-slate-400 mb-4">The very site you're on now. A responsive, professional portfolio built from scratch to showcase my skills in web design and development.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">HTML</span>
-                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">TailwindCSS</span>
-                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">JavaScript</span>
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <a href="https://github.com/v3shn" target="_blank" class="text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"><i class="fab fa-github fa-lg mr-1"></i> Code</a>
-                            </div>
+            <section id="projects">
+                <h2 class="section-title">Projects</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Personal Portfolio</h3>
+                        <p>A series of minimalist, responsive websites built to showcase my skills in web development and design. This site is the latest iteration.</p>
+                        <div class="tech-stack">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
                         </div>
                     </div>
-                    <div class="professional-card overflow-hidden">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">E-commerce UI Concept</h3>
-                            <p class="text-slate-600 dark:text-slate-400 mb-4">A modern and clean user interface design for a conceptual e-commerce store, focusing on user experience and visual appeal.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">Figma</span>
-                                <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">UI/UX Design</span>
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <a href="#" class="text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"><i class="fab fa-figma fa-lg mr-1"></i> View Design</a>
-                            </div>
+                    <div class="card">
+                        <h3>UI/UX Concepts</h3>
+                        <p>Various design projects focusing on techwear, typography, and anti-design principles, primarily created using Figma and Photoshop.</p>
+                         <div class="tech-stack">
+                            <span>Figma</span>
+                            <span>Photoshop</span>
+                            <span>UI/UX</span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="contact" class="py-20 px-6 bg-slate-50 dark:bg-slate-900/70 fade-in-section">
-            <div class="container mx-auto max-w-4xl text-center">
-                <h2 class="section-heading mx-auto">Get In Touch</h2>
-                <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
-                    I'm always open to discussing new projects or opportunities. Feel free to reach out.
+            <section id="contact">
+                <h2 class="section-title">Contact</h2>
+                <p>
+                    Feel free to reach out. I'm open to new opportunities and collaborations.
                 </p>
-                <div class="flex justify-center items-center space-x-6 md:space-x-8">
-                    <a href="https://wa.me/916235989299" target="_blank" class="text-green-500 hover:text-green-600 transition-colors" aria-label="WhatsApp">
-                        <i class="fab fa-whatsapp fa-3x"></i>
-                    </a>
-                    <a href="https://instagram.com/v3shn" target="_blank" class="text-pink-500 hover:text-pink-600 transition-colors" aria-label="Instagram">
-                        <i class="fab fa-instagram fa-3x"></i>
-                    </a>
-                    <a href="https://github.com/v3shn" target="_blank" class="text-slate-700 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors" aria-label="GitHub">
-                        <i class="fab fa-github fa-3x"></i>
-                    </a>
+                <div class="contact-links">
+                    <a href="https://wa.me/916235989299" target="_blank">WhatsApp</a>
+                    <a href="https://instagram.com/v3shn" target="_blank">Instagram</a>
+                    <a href="https://github.com/v3shn" target="_blank">GitHub</a>
                 </div>
-            </div>
-        </section>
-    </main>
+            </section>
+        </main>
 
-    <footer class="py-8 border-t border-slate-200 dark:border-slate-800">
-        <div class="container mx-auto px-6 text-center text-slate-500 dark:text-slate-400">
-            <p>&copy; 2025 Vishnu Prasad. All Rights Reserved.</p>
-        </div>
-    </footer>
+        <footer>
+            <div class="footer-text">
+                <p>&copy; 2025 Vishnu Prasad</p>
+            </div>
+        </footer>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- Theme Management ---
-            const themeToggle = document.getElementById('themeToggle');
-            const html = document.documentElement;
-
-            // Apply saved theme on page load
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.body.classList.toggle('dark', savedTheme === 'dark');
-
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('dark');
-                const isDarkMode = document.body.classList.contains('dark');
-                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-            });
-
-            // --- Age Calculation ---
-            // A simple, professional age display. No need for a tick-by-tick timer.
-            function calculateAge() {
-                const birthDate = new Date('2000-11-18');
-                const today = new Date();
-                let age = today.getFullYear() - birthDate.getFullYear();
-                const m = today.getMonth() - birthDate.getMonth();
-                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                }
-                const ageEl = document.getElementById('age');
-                if (ageEl) {
-                    ageEl.textContent = age;
-                }
+        // --- Live Clock ---
+        function updateClock() {
+            const clockElement = document.getElementById('clock');
+            if (clockElement) {
+                // Use Indian Standard Time (UTC+5:30)
+                const now = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                clockElement.textContent = `${hours}:${minutes}:${seconds}`;
             }
-            calculateAge();
-            
-            // --- Fade-in Section on Scroll ---
-            // A subtle animation to make the page feel more dynamic.
-            const sections = document.querySelectorAll('.fade-in-section');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target); // Optional: stop observing once visible
-                    }
-                });
-            }, {
-                rootMargin: '0px',
-                threshold: 0.15 // Section becomes visible when 15% is in view
-            });
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-        });
+        // --- Age Calculation ---
+        function calculateAge() {
+            const birthDate = new Date('2000-11-18');
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            const ageEl = document.getElementById('age');
+            if (ageEl) {
+                ageEl.textContent = age;
+            }
+        }
+        calculateAge();
     </script>
 </body>
 </html>
+
