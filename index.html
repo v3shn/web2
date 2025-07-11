@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vishnu | html</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Vishnu Prasad - Developer Portfolio</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
@@ -13,619 +16,639 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #00ffff;
             overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
+            line-height: 1.6;
         }
 
-        /* Animated starry background */
-        .stars {
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Animated Background */
+        .bg-animation {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: transparent;
+            opacity: 0.1;
         }
 
-        .star {
+        .bg-animation::before {
+            content: '';
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, #00ffff 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, #ff00ff 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, #ffff00 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite alternate;
         }
 
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
+        @keyframes pulse {
+            0% { opacity: 0.1; }
+            100% { opacity: 0.3; }
         }
 
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ff6b6b;
-            text-decoration: none;
-            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        nav a:hover {
-            color: #ffd93d;
-            transform: translateY(-2px);
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #00ffff;
+            margin-bottom: 40px;
             position: relative;
         }
 
-        .hero-content {
-            flex: 1;
-            max-width: 600px;
-            z-index: 10;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 300;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero .greeting {
-            font-size: 3.5rem;
-            font-weight: 300;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .wave {
-            animation: wave 2s infinite;
-            transform-origin: 70% 70%;
-        }
-
-        @keyframes wave {
-            0% { transform: rotate(0deg); }
-            10% { transform: rotate(14deg); }
-            20% { transform: rotate(-8deg); }
-            30% { transform: rotate(14deg); }
-            40% { transform: rotate(-4deg); }
-            50% { transform: rotate(10deg); }
-            60% { transform: rotate(0deg); }
-            100% { transform: rotate(0deg); }
-        }
-
-        .hero .name {
-            font-size: 4rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #4ecdc4);
+        .name {
+            font-size: 3.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
+            animation: glow 2s ease-in-out infinite alternate;
+            margin-bottom: 20px;
         }
 
-        .hero .title {
-            font-size: 3rem;
-            font-weight: 600;
-            color: #ff6b6b;
-            margin-bottom: 2rem;
+        @keyframes glow {
+            0% { text-shadow: 0 0 20px #00ffff; }
+            100% { text-shadow: 0 0 30px #ff00ff, 0 0 40px #ffff00; }
         }
 
-        .hero-image {
-            flex: 1;
+        /* 7-Segment Display */
+        .alive-section {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alive-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .alive-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #00ffff;
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            position: relative;
+            gap: 10px;
         }
 
-        .developer-illustration {
-            width: 500px;
-            height: auto;
-            animation: float 6s ease-in-out infinite;
+        .segment-display {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8em;
+            font-weight: 700;
+            background: #000;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            animation: flicker 0.5s ease-in-out infinite alternate;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        @keyframes flicker {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
         }
 
         /* About Section */
-        .section {
-            padding: 100px 0;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-left: 2rem;
-            padding-right: 2rem;
+        .about-section {
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid #ff00ff;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            transition: all 0.3s ease;
         }
 
-        .section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            font-weight: 600;
-            position: relative;
+        .about-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.3);
         }
 
-        .section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+        .section-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff00ff;
+            display: flex;
             align-items: center;
+            gap: 10px;
         }
 
         .about-text {
-            font-size: 1.1rem;
+            font-size: 1.2em;
             line-height: 1.8;
-            opacity: 0.9;
+            color: #ffffff;
         }
 
-        .about-image {
-            display: flex;
-            justify-content: center;
-        }
-
-        .profile-img {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #ff6b6b;
-            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
-        }
-
-        /* Skills Section */
-        .skills-grid {
+        /* Info Cards */
+        .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            gap: 20px;
+            margin: 40px 0;
         }
 
-        .skill-category {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .skill-category:hover {
-            transform: translateY(-5px);
-        }
-
-        .skill-category h3 {
-            color: #ffd93d;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tag {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        .info-card {
+            background: rgba(255, 255, 0, 0.1);
+            border: 2px solid #ffff00;
+            border-radius: 15px;
+            padding: 25px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .skill-tag:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 0, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
         }
 
-        /* Contact Section */
-        .contact-content {
+        .info-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 255, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.8em;
+            color: #ffff00;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-content {
+            color: #ffffff;
+            font-size: 1.1em;
+        }
+
+        /* Connect Section */
+        .connect-section {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
             text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
         }
 
-        .contact-content p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
+        .connect-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #00ffff;
+            animation: pulse-text 2s ease-in-out infinite;
         }
 
-        .contact-info {
+        @keyframes pulse-text {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .connect-description {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        .social-buttons {
             display: flex;
             justify-content: center;
-            gap: 1.5rem; /* Adjusted gap for potentially more items */
-            margin-top: 2rem;
-            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .contact-item {
-            color: white;
-            text-decoration: none;
-            padding: 1rem 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: inline-flex; /* Helps with alignment */
+        .social-btn {
+            display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            color: #ffffff;
+            text-decoration: none;
+            border: 2px solid;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .contact-item:hover {
-            background: rgba(255, 107, 107, 0.2);
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .social-btn:hover::before {
+            left: 100%;
+        }
+
+        .whatsapp-btn {
+            border-color: #25d366;
+            color: #25d366;
+        }
+
+        .whatsapp-btn:hover {
+            background: #25d366;
+            color: #000;
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 50px;
+        .instagram-btn {
+            border-color: #e4405f;
+            color: #e4405f;
         }
 
-        footer p {
-            opacity: 0.7;
-            font-weight: 300;
+        .instagram-btn:hover {
+            background: #e4405f;
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(228, 64, 95, 0.4);
         }
 
-        /* Responsive Design */
+        .threads-btn {
+            border-color: #000;
+            color: #ffffff;
+        }
+
+        .threads-btn:hover {
+            background: #ffffff;
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Animated Emojis */
+        .animated-emoji {
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .tech-emoji {
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Android-Optimized Responsive Design */
         @media (max-width: 768px) {
-            .hero {
-                flex-direction: column;
+            .container {
+                padding: 15px;
+            }
+            
+            .name {
+                font-size: 2.2em;
+                line-height: 1.2;
+            }
+            
+            .segment-display {
+                font-size: 1em;
+                padding: 15px;
+                letter-spacing: 1px;
+                word-break: break-all;
+            }
+            
+            .section-title {
+                font-size: 1.8em;
                 text-align: center;
-                padding-top: 100px;
             }
-
-            .hero .greeting {
-                font-size: 2.5rem;
-                justify-content: center;
+            
+            .about-section, .alive-section, .connect-section {
+                padding: 20px;
+                margin: 20px 0;
             }
-
-            .hero .name {
-                font-size: 2.5rem;
-            }
-
-            .hero .title {
-                font-size: 2rem;
-            }
-
-            .developer-illustration {
-                width: 300px;
-                margin-top: 2rem;
-            }
-
-            .about-content {
+            
+            .info-grid {
                 grid-template-columns: 1fr;
-                text-align: center;
+                gap: 15px;
             }
-
-            .contact-info {
+            
+            .info-card {
+                padding: 20px;
+            }
+            
+            .social-buttons {
                 flex-direction: column;
-                gap: 1rem;
+                align-items: center;
+                gap: 15px;
             }
-
-            nav ul {
-                gap: 1rem;
-                flex-wrap: wrap; /* Allow nav items to wrap */
+            
+            .social-btn {
+                width: 80%;
+                max-width: 250px;
                 justify-content: center;
+                padding: 18px 25px;
+                font-size: 1.1em;
+                min-height: 60px;
             }
-
-            .section {
-                padding: 80px 1rem;
+            
+            .about-text {
+                font-size: 1.1em;
+                text-align: justify;
+            }
+            
+            .card-content {
+                font-size: 1em;
+            }
+            
+            .connect-description {
+                font-size: 1.1em;
+                text-align: justify;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .name {
+                font-size: 1.8em;
+            }
+            
+            .segment-display {
+                font-size: 0.9em;
+                padding: 12px;
+            }
+            
+            .section-title {
+                font-size: 1.6em;
+            }
+            
+            .alive-title {
+                font-size: 1.5em;
+            }
+            
+            .social-btn {
+                width: 90%;
+                padding: 15px 20px;
+            }
+            
+            .about-text, .connect-description {
+                font-size: 1em;
+            }
+        }
+        
+        /* Android-specific optimizations */
+        @media screen and (max-width: 768px) {
+            /* Reduce animations for better performance on mobile */
+            .bg-animation::before {
+                animation-duration: 6s;
+            }
+            
+            .matrix-char {
+                display: none; /* Hide matrix effect on mobile for better performance */
+            }
+            
+            /* Improved touch targets */
+            .social-btn {
+                -webkit-tap-highlight-color: rgba(0, 255, 255, 0.3);
+                touch-action: manipulation;
+            }
+            
+            /* Prevent zoom on input focus */
+            input, select, textarea {
+                font-size: 16px;
+            }
+            
+            /* Smooth scrolling optimization */
+            html {
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
             }
         }
 
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        /* Matrix Rain Effect */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
         }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .matrix-char {
+            position: absolute;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            opacity: 0.3;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
+    <div class="bg-animation"></div>
+    <div class="matrix-rain" id="matrixRain"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="name">VISHNU PRASAD</h1>
+            <div class="animated-emoji tech-emoji" style="font-size: 2em;">⚡</div>
+        </header>
 
-    <nav>
-        <div class="container">
-            <a href="#home" class="logo">Vishnu.</a>
-            <ul>
-                <li><a href="#home">🏠 Home</a></li>
-                <li><a href="#about">👨‍💻 About</a></li>
-                <li><a href="#contact">🤝 Reach me</a></li>
-                <li><a href="#" style="background: linear-gradient(45deg, #ff6b6b, #ffd93d); padding: 0.5rem 1rem; border-radius: 20px; color: white;">⭐</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="greeting">
-                Hi There! <span class="wave">👋</span>
+        <section class="alive-section">
+            <h2 class="alive-title">
+                <span class="animated-emoji">🚀</span>
+                ALIVE SINCE
+                <span class="animated-emoji">⏰</span>
+            </h2>
+            <div class="segment-display" id="aliveTime">
+                Loading...
             </div>
-            <div>I'M <span class="name">VISHNU PRASAD</span></div>
-            <div class="title">Hobby Developer</div>
-        </div>
-        <div class="hero-image">
-            <svg class="developer-illustration" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
-                <rect x="50" y="280" width="400" height="80" fill="#4a5568" rx="10"/>
-                <rect x="60" y="290" width="380" height="60" fill="#2d3748" rx="8"/>
-                
-                <rect x="150" y="180" width="200" height="120" fill="#1a202c" rx="10"/>
-                <rect x="160" y="190" width="180" height="100" fill="#2d3748" rx="5"/>
-                
-                <rect x="170" y="200" width="160" height="80" fill="#667eea" rx="3"/>
-                <rect x="175" y="205" width="150" height="5" fill="#ff6b6b" rx="2"/>
-                <rect x="175" y="215" width="120" height="3" fill="#ffd93d" rx="1"/>
-                <rect x="175" y="225" width="100" height="3" fill="#4ecdc4" rx="1"/>
-                <rect x="175" y="235" width="140" height="3" fill="#ff6b6b" rx="1"/>
-                <rect x="175" y="245" width="80" height="3" fill="#ffd93d" rx="1"/>
-                <rect x="175" y="255" width="110" height="3" fill="#4ecdc4" rx="1"/>
-                <rect x="175" y="265" width="90" height="3" fill="#ff6b6b" rx="1"/>
-                
-                <rect x="220" y="300" width="60" height="20" fill="#4a5568" rx="10"/>
-                <rect x="235" y="290" width="30" height="30" fill="#4a5568" rx="5"/>
-                
-                <ellipse cx="350" cy="200" rx="40" ry="45" fill="#fdb5a6"/>
-                <ellipse cx="350"cy="190" rx="35" ry="40" fill="#fdb5a6"/>
-                
-                <path d="M315 170 Q350 150 385 170 Q390 160 385 180 Q380 190 370 185 Q360 180 350 182 Q340 180 330 185 Q320 190 315 180 Q310 160 315 170" fill="#8b4513"/>
-                
-                <circle cx="335" cy="185" r="3" fill="#2d3748"/>
-                <circle cx="365" cy="185" r="3" fill="#2d3748"/>
-                
-                <ellipse cx="350" cy="195" rx="2" ry="3" fill="#f4a261"/>
-                
-                <path d="M345 205 Q350 210 355 205" stroke="#2d3748" stroke-width="2" fill="none"/>
-                
-                <rect x="320" y="230" width="60" height="80" fill="#8b5cf6" rx="30"/>
-                
-                <ellipse cx="290" cy="250" rx="15" ry="40" fill="#fdb5a6"/>
-                <ellipse cx="410" cy="250" rx="15" ry="40" fill="#fdb5a6"/>
-                
-                <circle cx="290" cy="280" r="12" fill="#fdb5a6"/>
-                <circle cx="410" cy="280" r="12" fill="#fdb5a6"/>
-                
-                <rect x="200" y="330" width="100" height="20" fill="#2d3748" rx="5"/>
-                <rect x="205" y="335" width="90" height="10" fill="#4a5568" rx="3"/>
-                
-                <rect x="380" y="320" width="30" height="35" fill="#ffffff" rx="5"/>
-                <rect x="385" y="325" width="20" height="25" fill="#8b4513" rx="3"/>
-                <ellipse cx="395" cy="325" rx="10" ry="3" fill="#d2691e"/>
-                
-                <rect x="80" y="320" width="20" height="30" fill="#8b4513"/>
-                <ellipse cx="90" cy="315" rx="15" ry="20" fill="#228b22"/>
-                <ellipse cx="85" cy="310" rx="10" ry="15" fill="#32cd32"/>
-                <ellipse cx="95" cy="308" rx="8" ry="12" fill="#98fb98"/>
-                
-                <circle cx="120" cy="150" r="2" fill="#ffd93d" opacity="0.7"/>
-                <circle cx="180" cy="120" r="1.5" fill="#ff6b6b" opacity="0.8"/>
-                <circle cx="420" cy="140" r="2" fill="#4ecdc4" opacity="0.6"/>
-                <circle cx="380" cy="100" r="1" fill="#ffd93d" opacity="0.9"/>
-                <circle cx="140" cy="80" r="1.5" fill="#ff6b6b" opacity="0.7"/>
-            </svg>
-        </div>
-    </section>
+        </section>
 
-    <section id="about" class="section">
-        <h2>About Me</h2>
-        <div class="about-content">
-            <div class="about-text fade-in">
-                <p>I'm a passionate developer and website designer with a love for creating innovative digital solutions. With expertise in MongoDB, Express.js, React, and Node.js, I build full-stack applications that deliver exceptional user experiences.</p>
-                <p>My journey in web development started with a curiosity about how things work behind the scenes. Today, I specialize in creating responsive, scalable applications that solve real-world problems.</p>
-                <p>When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing my knowledge through blogs and tutorials.</p>
+        <section class="about-section">
+            <h2 class="section-title">
+                <span class="animated-emoji">👨‍💻</span>
+                ABOUT ME
+            </h2>
+            <p class="about-text">
+                I'm a passionate developer having an experience of building Web and Mobile applications with 
+                <span style="color: #ffff00;">JavaScript</span> / 
+                <span style="color: #00ffff;">React.js</span> / 
+                <span style="color: #ff00ff;">Node.js</span> 
+                and now doing BSc Computer Science in IHRD Karthikapally.
+            </p>
+        </section>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h3 class="card-title">
+                    <span class="animated-emoji">📍</span>
+                    LOCATION
+                </h3>
+                <div class="card-content">Kayamkulam, Kerala</div>
             </div>
-            <div class="about-image fade-in">
-                <img src="https://via.placeholder.com/300x300/667eea/ffffff?text=Your+Photo" alt="Profile Picture" class="profile-img">
+            
+            <div class="info-card">
+                <h3 class="card-title">
+                    <span class="animated-emoji">🎯</span>
+                    HOBBIES
+                </h3>
+                <div class="card-content">Coding, Hearing Music</div>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="card-title">
+                    <span class="animated-emoji">💡</span>
+                    PASSION
+                </h3>
+                <div class="card-content">Building innovative solutions with clean, efficient code</div>
             </div>
         </div>
-    </section>
 
-    <section id="skills" class="section">
-        <h2>Skills & Technologies</h2>
-        <div class="skills-grid">
-            <div class="skill-category fade-in">
-                <h3>Frontend</h3>
-                <div class="skill-tags">
-                    <span class="skill-tag">React</span>
-                    <span class="skill-tag">JavaScript</span>
-                    <span class="skill-tag">TypeScript</span>
-                    <span class="skill-tag">HTML5</span>
-                    <span class="skill-tag">CSS3</span>
-                    <span class="skill-tag">Tailwind CSS</span>
-                    <span class="skill-tag">Next.js</span>
-                    <span class="skill-tag">Redux</span>
-                </div>
+        <section class="connect-section">
+            <h2 class="connect-title">
+                <span class="animated-emoji">🌐</span>
+                LET'S CONNECT
+            </h2>
+            <p class="connect-description">
+                I'm always open to discussing new opportunities, interesting projects, or just having a friendly conversation about technology and innovation.
+            </p>
+            
+            <div class="social-buttons">
+                <a href="https://wa.me/916235989299" class="social-btn whatsapp-btn" target="_blank">
+                    <span class="animated-emoji">📱</span>
+                    WhatsApp
+                </a>
+                <a href="https://instagram.com/v3shn" class="social-btn instagram-btn" target="_blank">
+                    <span class="animated-emoji">📸</span>
+                    Instagram
+                </a>
+                <a href="https://threads.net/@v3shn" class="social-btn threads-btn" target="_blank">
+                    <span class="animated-emoji">🧵</span>
+                    Threads
+                </a>
             </div>
-            <div class="skill-category fade-in">
-                <h3>Backend</h3>
-                <div class="skill-tags">
-                    <span class="skill-tag">Node.js</span>
-                    <span class="skill-tag">Express.js</span>
-                    <span class="skill-tag">MongoDB</span>
-                    <span class="skill-tag">PostgreSQL</span>
-                    <span class="skill-tag">Python</span>
-                    <span class="skill-tag">Django</span>
-                    <span class="skill-tag">REST APIs</span>
-                    <span class="skill-tag">GraphQL</span>
-                </div>
-            </div>
-            <div class="skill-category fade-in">
-                <h3>Tools & Others</h3>
-                <div class="skill-tags">
-                    <span class="skill-tag">Git</span>
-                    <span class="skill-tag">Docker</span>
-                    <span class="skill-tag">AWS</span>
-                    <span class="skill-tag">Firebase</span>
-                    <span class="skill-tag">Vercel</span>
-                    <span class="skill-tag">Figma</span>
-                    <span class="skill-tag">Linux</span>
-                    <span class="skill-tag">Postman</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="section">
-        <h2>Get In Touch</h2>
-        <div class="contact-content">
-            <p>I'm always open to discussing new opportunities, interesting projects, or just having a chat about the latest in web development. Let's connect!</p>
-            <div class="contact-info">
-                <a href="mailto:vishnuprasadkl29@gmail.com" class="contact-item">📧 Email</a>
-                <a href="https://github.com/v3shn" target="_blank" class="contact-item">🐙 GitHub</a>
-                <a href="https://wa.me/916235989299" target="_blank" class="contact-item">💬 WhatsApp</a>
-                <a href="https://www.instagram.com/v3shn/" target="_blank" class="contact-item">📸 Instagram</a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2024 Vishnu Prasad. Designed and Developed by Vishnu Prasad</p>
-    </footer>
+        </section>
+    </div>
 
     <script>
-        // Create animated stars
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const numStars = 100;
+        // Age Calculator with 7-segment display
+        function updateAliveTime() {
+            const birthDate = new Date('2000-11-18'); // Your birth date: 18-11-2000
+            const now = new Date();
+            const diff = now - birthDate;
             
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                starsContainer.appendChild(star);
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('aliveTime').textContent = 
+                `${years} YEARS ${months} MONTHS ${days} DAYS ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Update every second
+        setInterval(updateAliveTime, 1000);
+        updateAliveTime();
+        
+        // Matrix rain effect - optimized for mobile
+        function createMatrixRain() {
+            const matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const matrixContainer = document.getElementById('matrixRain');
+            
+            // Reduce matrix characters on mobile devices
+            const isMobile = window.innerWidth <= 768;
+            const charCount = isMobile ? 20 : 50;
+            
+            for (let i = 0; i < charCount; i++) {
+                const char = document.createElement('div');
+                char.className = 'matrix-char';
+                char.textContent = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                char.style.left = Math.random() * 100 + '%';
+                char.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                char.style.animationDelay = Math.random() * 2 + 's';
+                matrixContainer.appendChild(char);
             }
         }
-
-        // Smooth scrolling for navigation links
+        
+        createMatrixRain();
+        
+        // Smooth scrolling for any internal links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
-
-        // Fade in animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Initialize stars when page loads
-        window.addEventListener('load', createStars);
-
-        // Parallax effect for hero illustration
+        
+        // Add parallax effect to background
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
-            const illustration = document.querySelector('.developer-illustration');
-            if (illustration) {
-                // Adjust the parallax speed by changing the multiplier (e.g., 0.1)
-                illustration.style.transform = `translateY(${scrolled * 0.1}px)`;
-            }
+            const parallax = document.querySelector('.bg-animation');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
         });
     </script>
 </body>
