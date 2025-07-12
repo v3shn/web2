@@ -895,8 +895,9 @@
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             
+            // This is the updated line for the new format
             document.getElementById('aliveTime').textContent = 
-                `${years} YEARS ${months} MONTHS ${days} DAYS ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                `${years} YEARS ${months} MONTHS ${days} DAYS ${hours} HOURS ${minutes} MINUTES ${seconds} SECONDS`;
         }
         
         // Update every second
