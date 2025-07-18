@@ -8,14 +8,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
         
-        /* Loading the authentic 7-segment font */
-        @font-face {
-          font-family: 'DSEG7';
-          src: url('https://cdn.jsdelivr.net/gh/keshikan/DSEG@main/fonts/DSEG7Classic-Bold.woff2') format('woff2');
-          font-weight: bold;
-          font-style: normal;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -34,32 +26,6 @@
             position: relative;
         }
         
-        /* New Top Bar for the Clock */
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 20px;
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border-bottom: 1px solid rgba(0, 245, 255, 0.2);
-            z-index: 1000;
-        }
-
-        #digital-clock-container {
-            font-family: 'DSEG7', monospace; /* Applying the new 7-segment font */
-            color: #00f5ff;
-            font-size: clamp(1.5rem, 4vw, 2.2rem);
-            font-weight: bold;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(0, 245, 255, 0.7), 0 0 20px rgba(0, 245, 255, 0.5);
-        }
-
         /* Animated Tech Background */
         .tech-background {
             position: fixed;
@@ -231,6 +197,15 @@
             color: #00f5ff;
             text-transform: uppercase;
             letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        #digital-clock-container {
+            font-family: 'Orbitron', monospace;
+            color: #00f5ff;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            letter-spacing: 3px;
+            text-shadow: 0 0 8px rgba(0, 245, 255, 0.7), 0 0 15px rgba(0, 245, 255, 0.5);
             margin-bottom: 40px;
         }
         
@@ -692,6 +667,10 @@
         }
         
         @media (max-width: 480px) {
+            #digital-clock-container {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
             .hero-subtitle {
                 font-size: 0.8rem;
                 line-height: 1.4;
@@ -713,12 +692,6 @@
     </style>
 </head>
 <body>
-    <div class="top-bar">
-        <div id="digital-clock-container">
-            <span id="time"></span> &nbsp;|&nbsp; <span id="date"></span>
-        </div>
-    </div>
-
     <div class="tech-background"></div>
     
     <div class="circuit-lines">
@@ -754,4 +727,215 @@
             <h1 class="hero-name glitch" data-text="VISHNU PRASAD">VISHNU PRASAD</h1>
             <p class="hero-title">Creative Engineer • Tech Innovator</p>
             <p class="hero-subtitle" id="aliveCounter"></p>
-            <a href="#
+            <div id="digital-clock-container">
+                <span id="time"></span> &nbsp;|&nbsp; <span id="date"></span>
+            </div>
+            <a href="#reach-me" class="cta-button">Reach Me</a>
+        </div>
+    </header>
+
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title">About</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Engineer • Developer • Creator</h3>
+                    <p>Hey! I'm <span class="highlight">Vishnu Prasad</span>, a Mechanical Engineering graduate from Carmel Polytechnic College, Alappuzha, originally from Kayamkulam, Kerala, and born in Punalur.</p>
+                    <p>I've interned at <span class="highlight">Suzee Hyundai, Tenkasi</span>, bringing real-world automotive experience to my technical arsenal.</p>
+                    <p>Currently pursuing <span class="highlight">BSc in Computer Science</span> from IHRD College of Applied Science, Karthikapally, merging my mechanical engineering foundation with cutting-edge digital technologies.</p>
+                    <p>I'm passionate about exploring new places, listening to music, and diving deep into <span class="highlight">coding and web designing</span> in my free time.</p>
+                </div>
+                
+                <div class="tech-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">2+</span>
+                        <span class="stat-label">Years Coding</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">Ideas Created</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Innovation Mode</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Passion Driven</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">💻</div>
+                    <h3>Coding</h3>
+                    <p>Building innovative solutions with clean, efficient code. Transforming complex problems into elegant digital solutions through creative programming and algorithmic thinking.</p>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-icon">🎨</div>
+                    <h3>Web Design</h3>
+                    <p>Creating stunning, functional websites that blend aesthetics with performance. Crafting user experiences that captivate and engage through modern design principles.</p>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-icon">⚙️</div>
+                    <h3>Mechanical Engineering</h3>
+                    <p>Strong foundation in engineering principles, precision thinking, and systematic problem-solving. Bringing mechanical precision to digital innovation.</p>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-icon">🚀</div>
+                    <h3>Innovation</h3>
+                    <p>Constantly generating breakthrough ideas and approaches. Combining technical expertise with creative vision to push boundaries and create the future.</p>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-icon">🌍</div>
+                    <h3>Exploration</h3>
+                    <p>Passionate about discovering new places, cultures, and perspectives. This wanderlust fuels my creativity and brings fresh insights to every project.</p>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-icon">🎵</div>
+                    <h3>Creative Flow</h3>
+                    <p>Finding inspiration through music and rhythm. This creative energy flows into my work, helping me think outside conventional boundaries and innovate.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="reach-me">
+        <div class="container">
+            <div class="reach-me-container">
+                <div class="reach-me-content">
+                    <h2 class="reach-me-title">Reach Me</h2>
+                    <p class="reach-me-text">
+                        Let's connect and explore the possibilities together! Whether you want to collaborate on exciting projects, discuss innovative ideas, or just say hello, I'm always ready to engage with fellow creators and tech enthusiasts.
+                    </p>
+                    
+                    <div class="social-buttons">
+                        <a href="https://wa.me/916235998929" target="_blank" class="social-button whatsapp">
+                            <i class="fa-brands fa-whatsapp social-icon"></i>
+                            <span class="social-text">WhatsApp</span>
+                        </a>
+                        <a href="https://instagram.com/v3shn" target="_blank" class="social-button instagram">
+                            <i class="fa-brands fa-instagram social-icon"></i>
+                            <span class="social-text">Instagram</span>
+                        </a>
+                        <a href="https://threads.net/@v3shn" target="_blank" class="social-button threads">
+                            <i class="fa-brands fa-threads social-icon"></i>
+                            <span class="social-text">Threads</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="contact-container">
+                <div class="contact-content">
+                    <h2 class="contact-title">Let's Create Something Amazing</h2>
+                    <p class="contact-text">
+                        I'm always open to discussing new opportunities, interesting projects, or just having a friendly conversation about technology and innovation. Let's build the future together.
+                    </p>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <strong>Location</strong>
+                            <span>Kayamkulam, Kerala, India</span>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Experience</strong>
+                            <span>Suzee Hyundai, Tenkasi</span>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Education</strong>
+                            <span>IHRD College of Applied Science</span>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Focus</strong>
+                            <span>Engineering × Technology</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function updateAliveCounter() {
+            const birthDate = new Date('2000-11-18T00:00:00');
+            const now = new Date();
+            let diff = now.getTime() - birthDate.getTime();
+
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            diff %= (1000 * 60 * 60 * 24 * 365.25);
+            const months = Math.floor(diff / (1000 * 60 * 60 * 24 * (365.25 / 12)));
+            diff %= (1000 * 60 * 60 * 24 * (365.25 / 12));
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            diff %= (1000 * 60 * 60 * 24);
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            diff %= (1000 * 60 * 60);
+            const minutes = Math.floor(diff / (1000 * 60));
+            diff %= (1000 * 60);
+            const seconds = Math.floor(diff / 1000);
+
+            const counterElement = document.getElementById('aliveCounter');
+            // This is the corrected line to show the dynamic count
+            counterElement.textContent = `Alive Since: ${years}y ${months}m ${days}d ${hours}h ${minutes}min ${seconds}s`;
+        }
+
+        function updateDigitalClock() {
+            // Options to format the date to Indian Standard Time (IST)
+            const options = {
+                timeZone: 'Asia/Kolkata',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour12: true,
+            };
+
+            // Create a formatter and get the parts
+            const formatter = new Intl.DateTimeFormat('en-GB', options);
+            const parts = formatter.formatToParts(new Date());
+
+            let timeString = '';
+            let dateString = '';
+
+            const partMap = {};
+            for (const part of parts) {
+                partMap[part.type] = part.value;
+            }
+
+            timeString = `${partMap.hour}:${partMap.minute}:${partMap.second} ${partMap.dayPeriod.toUpperCase()}`;
+            dateString = `${partMap.day}/${partMap.month}/${partMap.year}`;
+
+            document.getElementById('time').textContent = timeString;
+            document.getElementById('date').textContent = dateString;
+        }
+
+        // Run both functions once immediately to avoid initial delay
+        updateAliveCounter();
+        updateDigitalClock();
+
+        // This is the corrected interval to update BOTH counters every second
+        setInterval(() => {
+            updateAliveCounter();
+            updateDigitalClock();
+        }, 1000);
+
+    </script>
+</body>
+</html>
