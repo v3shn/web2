@@ -41,7 +41,6 @@
             left: 0;
             width: 100%;
             display: flex;
-            /* CHANGED: Arranges clock left, signal right */
             justify-content: space-between; 
             align-items: center;
             padding: 10px 25px; 
@@ -52,23 +51,30 @@
             z-index: 1000;
         }
 
-        /* MODIFIED: Clock Style */
+        /* MODIFIED: Clock Container Style */
         #digital-clock-container {
             font-family: 'Rajdhani', sans-serif; 
             color: #00f5ff;
             font-size: clamp(1rem, 2.5vw, 1.1rem); 
             font-weight: 600;
             letter-spacing: 1.5px; 
-            text-shadow: 0 0 6px rgba(0, 245, 255, 0.6); 
+            text-shadow: 0 0 6px rgba(0, 245, 255, 0.6);
+            /* NEW: Prevents text wrapping on shrink */
+            white-space: nowrap; 
         }
+        
+        /* NEW: Styles for responsive clock parts */
+        .time-short { display: none; } /* Hidden on desktop by default */
+        .time-full, .clock-date, .clock-separator { display: inline; } /* Shown on desktop by default */
+        
 
         /* =========================================== */
-        /* === NEW: Signal Indicator Styles Start ==== */
+        /* === Signal Indicator Styles Start ==== */
         /* =========================================== */
         .signal-indicator {
             display: flex;
             align-items: center;
-            gap: 8px; /* Space between elements */
+            gap: 8px;
             font-family: 'Rajdhani', sans-serif;
             font-weight: 600;
             color: #00f5ff;
@@ -76,7 +82,7 @@
             text-shadow: 0 0 6px rgba(0, 245, 255, 0.6);
         }
         .roaming-symbol {
-            font-size: 0.7em; /* Make 'R' slightly smaller */
+            font-size: 0.7em;
             font-weight: 700;
             opacity: 0.8;
         }
@@ -85,29 +91,27 @@
         }
         .signal-bars {
             display: flex;
-            align-items: flex-end; /* Align bars to grow upwards */
+            align-items: flex-end;
             gap: 2px;
-            height: 16px; /* Container height */
+            height: 16px;
         }
         .bar {
             width: 3px;
-            background-color: rgba(0, 245, 255, 0.3); /* Inactive color */
+            background-color: rgba(0, 245, 255, 0.3);
             transition: background-color 0.5s ease;
             border-radius: 1px;
         }
-        /* Set individual bar heights */
         .bar:nth-child(1) { height: 25%; }
         .bar:nth-child(2) { height: 45%; }
         .bar:nth-child(3) { height: 65%; }
         .bar:nth-child(4) { height: 85%; }
         .bar:nth-child(5) { height: 100%; }
 
-        /* Active state for the bars */
         .bar.active {
-            background-color: #00f5ff; /* Active color */
+            background-color: #00f5ff;
         }
         /* ========================================= */
-        /* === NEW: Signal Indicator Styles End ====== */
+        /* === Signal Indicator Styles End ====== */
         /* ========================================= */
 
 
@@ -665,6 +669,12 @@
                 padding: 8px 15px;
             }
 
+            /* NEW: Shorten clock on smaller screens */
+            .time-short { display: inline; }
+            .time-full { display: none; }
+            .clock-date { display: none; }
+            .clock-separator { display: none; }
+
             .section {
                 padding: 60px 0;
             }
@@ -758,7 +768,6 @@
             .stat-label {
                 font-size: 0.9rem;
             }
-            /* NEW: Responsive styles for signal indicator */
             .signal-indicator {
                 gap: 5px;
             }
@@ -773,7 +782,15 @@
 </head>
 <body>
     <div class="top-bar">
-        <div id="digital-clock-container"></div>
+        <div id="digital-clock-container">
+            <span class="clock-date"></span>
+            <span class="clock-separator"> | </span>
+            <span class="clock-time">
+                <span class="time-full"></span>
+                <span class="time-short"></span>
+            </span>
+        </div>
+        
         <div class="signal-indicator">
             <span class="roaming-symbol">R</span>
             <span class="network-type">5G</span>
@@ -964,7 +981,7 @@
     </section>
 
     <script>
-        // ========= MODIFIED: Indian Standard Time Clock with AM/PM =========
+        // ========= MODIFIED: Responsive Indian Standard Time Clock =========
         function updateIndianTime() {
             const now = new Date();
             const options = {
@@ -990,19 +1007,28 @@
                 }
             });
             
-            const dateStr = `${dateParts.day}-${dateParts.month}-${dateParts.year}`;
-            const timeStr = `${dateParts.hour}:${dateParts.minute}:${dateParts.second} ${dateParts.dayPeriod}`;
+            // Select the new span elements
+            const dateEl = document.querySelector('.clock-date');
+            const timeFullEl = document.querySelector('.time-full');
+            const timeShortEl = document.querySelector('.time-short');
 
-            const clockElement = document.getElementById('digital-clock-container');
-            if (clockElement) {
-                clockElement.textContent = `${dateStr} | ${timeStr} IST`;
+            if(dateEl && timeFullEl && timeShortEl) {
+                // Format the different string versions
+                const dateStr = `${dateParts.day}-${dateParts.month}-${dateParts.year}`;
+                const timeFullStr = `${dateParts.hour}:${dateParts.minute}:${dateParts.second} ${dateParts.dayPeriod}`;
+                const timeShortStr = `${dateParts.hour}:${dateParts.minute} ${dateParts.dayPeriod}`;
+
+                // Update the content of each span
+                dateEl.textContent = dateStr;
+                timeFullEl.textContent = timeFullStr;
+                timeShortEl.textContent = timeShortStr;
             }
         }
 
         setInterval(updateIndianTime, 1000);
         updateIndianTime();
 
-        // Dynamic alive counter with yr mm dd hh mm ss format
+        // Dynamic alive counter
         function updateAliveCounter() {
             const birthDate = new Date('2000-11-18T00:00:00');
             const now = new Date();
@@ -1032,12 +1058,9 @@
         setInterval(updateAliveCounter, 1000);
         updateAliveCounter();
         
-        // ===============================================
-        // === NEW: Dynamic Signal Indicator Script ======
-        // ===============================================
+        // Dynamic Signal Indicator Script
         function updateSignalStrength() {
             const bars = document.querySelectorAll('.signal-indicator .bar');
-            // Generate a random signal strength from 1 to 5
             const strength = Math.floor(Math.random() * 5) + 1; 
 
             bars.forEach((bar, index) => {
@@ -1049,11 +1072,8 @@
             });
         }
 
-        // Update the signal every 3 seconds
         setInterval(updateSignalStrength, 3000);
-        // Initial call to set the signal strength on load
         updateSignalStrength();
-        // ===============================================
     </script>
 </body>
 </html>
