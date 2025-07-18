@@ -8,6 +8,14 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
         
+        /* Loading the authentic 7-segment font */
+        @font-face {
+          font-family: 'DSEG7';
+          src: url('https://cdn.jsdelivr.net/gh/keshikan/DSEG@main/fonts/DSEG7Classic-Bold.woff2') format('woff2');
+          font-weight: bold;
+          font-style: normal;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -26,6 +34,32 @@
             position: relative;
         }
         
+        /* New Top Bar for the Clock */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+            z-index: 1000;
+        }
+
+        #digital-clock-container {
+            font-family: 'DSEG7', monospace; /* Applying the new 7-segment font */
+            color: #00f5ff;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.7), 0 0 20px rgba(0, 245, 255, 0.5);
+        }
+
         /* Animated Tech Background */
         .tech-background {
             position: fixed;
@@ -197,15 +231,6 @@
             color: #00f5ff;
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-bottom: 15px;
-        }
-
-        #digital-clock-container {
-            font-family: 'Orbitron', monospace;
-            color: #00f5ff;
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            letter-spacing: 3px;
-            text-shadow: 0 0 8px rgba(0, 245, 255, 0.7), 0 0 15px rgba(0, 245, 255, 0.5);
             margin-bottom: 40px;
         }
         
@@ -667,10 +692,6 @@
         }
         
         @media (max-width: 480px) {
-            #digital-clock-container {
-                font-size: 1rem;
-                line-height: 1.4;
-            }
             .hero-subtitle {
                 font-size: 0.8rem;
                 line-height: 1.4;
@@ -692,6 +713,12 @@
     </style>
 </head>
 <body>
+    <div class="top-bar">
+        <div id="digital-clock-container">
+            <span id="time"></span> &nbsp;|&nbsp; <span id="date"></span>
+        </div>
+    </div>
+
     <div class="tech-background"></div>
     
     <div class="circuit-lines">
@@ -727,9 +754,6 @@
             <h1 class="hero-name glitch" data-text="VISHNU PRASAD">VISHNU PRASAD</h1>
             <p class="hero-title">Creative Engineer • Tech Innovator</p>
             <p class="hero-subtitle" id="aliveCounter">Alive Since : 18-11-2000</p>
-            <div id="digital-clock-container">
-                <span id="time"></span> &nbsp;|&nbsp; <span id="date"></span>
-            </div>
             <a href="#reach-me" class="cta-button">Reach Me</a>
         </div>
     </header>
@@ -890,36 +914,31 @@
             const seconds = Math.floor(diff / 1000);
 
             const counterElement = document.getElementById('aliveCounter');
-            counterElement.textContent = `Alive Since: ${years}y ${months}m ${days}d ${hours}h ${minutes}min ${seconds}s`;
+            counterElement.textContent = `Alive Since : 18-11-2000`;
         }
 
         function updateDigitalClock() {
-            // Options to format the date to Indian Standard Time (IST)
             const options = {
                 timeZone: 'Asia/Kolkata',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric',
                 hour12: true,
             };
 
-            // Create a formatter and get the parts
             const formatter = new Intl.DateTimeFormat('en-GB', options);
             const parts = formatter.formatToParts(new Date());
-
-            let timeString = '';
-            let dateString = '';
 
             const partMap = {};
             for (const part of parts) {
                 partMap[part.type] = part.value;
             }
 
-            timeString = `${partMap.hour}:${partMap.minute}:${partMap.second} ${partMap.dayPeriod.toUpperCase()}`;
-            dateString = `${partMap.day}/${partMap.month}/${partMap.year}`;
+            const timeString = `${partMap.hour}:${partMap.minute}:${partMap.second} ${partMap.dayPeriod.toUpperCase()}`;
+            const dateString = `${partMap.day}/${partMap.month}/${partMap.year}`;
 
             document.getElementById('time').textContent = timeString;
             document.getElementById('date').textContent = dateString;
@@ -929,11 +948,8 @@
         updateAliveCounter();
         updateDigitalClock();
 
-        // Set an interval to update both clocks every second
-        setInterval(() => {
-            updateAliveCounter();
-            updateDigitalClock();
-        }, 1000);
+        // Set an interval to update the clock every second
+        setInterval(updateDigitalClock, 1000);
 
     </script>
 </body>
