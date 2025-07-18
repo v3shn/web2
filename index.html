@@ -8,7 +8,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
         
-        /* Loading the authentic 7-segment font */
+        /* Loading the authentic 7-segment font is no longer needed for the clock */
         @font-face {
           font-family: 'DSEG7';
           src: url('https://cdn.jsdelivr.net/gh/keshikan/DSEG@main/fonts/DSEG7Classic-Bold.woff2') format('woff2');
@@ -32,19 +32,22 @@
             color: #fff;
             overflow-x: hidden;
             position: relative;
-            padding-top: 60px; /* Added padding to prevent content from hiding behind the fixed top bar */
+            /* Adjusted padding to prevent content from hiding behind the fixed top bar */
+            padding-top: 50px; 
         }
         
-        /* New Top Bar for the Clock */
+        /* MODIFIED: Top Bar for the Clock */
         .top-bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             display: flex;
-            justify-content: center;
+            /* CHANGED: Aligned content to the left */
+            justify-content: flex-start; 
             align-items: center;
-            padding: 10px 20px;
+            /* CHANGED: Adjusted padding */
+            padding: 10px 25px; 
             background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
@@ -52,13 +55,18 @@
             z-index: 1000;
         }
 
+        /* MODIFIED: Clock Style */
         #digital-clock-container {
-            font-family: 'DSEG7', monospace; /* Applying the 7-segment font */
+            /* CHANGED: Font to a cleaner, readable one */
+            font-family: 'Rajdhani', sans-serif; 
             color: #00f5ff;
-            font-size: clamp(1.5rem, 4vw, 2.2rem);
-            font-weight: bold;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(0, 245, 255, 0.7), 0 0 20px rgba(0, 245, 255, 0.5);
+            /* CHANGED: Font size to be smaller and responsive */
+            font-size: clamp(1rem, 2.5vw, 1.1rem); 
+            font-weight: 600; /* Adjusted weight for readability */
+            /* CHANGED: Adjusted letter spacing for the new font */
+            letter-spacing: 1.5px; 
+            /* CHANGED: Reduced text-shadow for a cleaner look */
+            text-shadow: 0 0 6px rgba(0, 245, 255, 0.6); 
         }
 
         /* Animated Tech Background */
@@ -609,10 +617,10 @@
 
         @media (max-width: 768px) {
             body {
-                padding-top: 50px; /* Adjust padding for smaller screens */
+                padding-top: 45px; /* Adjust padding for smaller screens */
             }
             .top-bar {
-                padding: 5px 10px;
+                padding: 8px 15px;
             }
 
             /* Reduce padding and margins for a more compact view */
@@ -898,12 +906,12 @@
     </section>
 
     <script>
-        // ========= NEW: Indian Standard Time Clock =========
+        // ========= MODIFIED: Indian Standard Time Clock with AM/PM =========
         function updateIndianTime() {
             const now = new Date();
             const options = {
                 timeZone: 'Asia/Kolkata',
-                hour12: false,
+                hour12: true, // CHANGED: Enabled AM/PM
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -917,12 +925,17 @@
 
             const dateParts = {};
             parts.forEach(part => {
-                dateParts[part.type] = part.value;
+                // Use a generic key for the AM/PM part to handle browser differences
+                if (part.type === 'dayPeriod' || part.type === 'ampm') {
+                    dateParts.dayPeriod = part.value.toUpperCase();
+                } else {
+                    dateParts[part.type] = part.value;
+                }
             });
             
-            // Format as DD-MM-YYYY | HH:MM:SS IST
+            // Format as DD-MM-YYYY | HH:MM:SS AM/PM IST
             const dateStr = `${dateParts.day}-${dateParts.month}-${dateParts.year}`;
-            const timeStr = `${dateParts.hour}:${dateParts.minute}:${dateParts.second}`;
+            const timeStr = `${dateParts.hour}:${dateParts.minute}:${dateParts.second} ${dateParts.dayPeriod}`;
 
             const clockElement = document.getElementById('digital-clock-container');
             if (clockElement) {
@@ -934,7 +947,7 @@
         setInterval(updateIndianTime, 1000);
         // Initial call to display immediately
         updateIndianTime();
-        // ========================================================
+        // ===================================================================
 
 
         // Dynamic alive counter with yr mm dd hh mm ss format
