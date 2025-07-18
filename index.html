@@ -14,6 +14,10 @@
             box-sizing: border-box;
         }
         
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Rajdhani', sans-serif;
             background: #0a0a0a;
@@ -147,6 +151,7 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            padding: 0 15px;
         }
         
         .hero-container {
@@ -157,7 +162,7 @@
         
         .hero-name {
             font-family: 'Chakra Petch', sans-serif;
-            font-size: clamp(3rem, 8vw, 8rem);
+            font-size: clamp(3rem, 10vw, 8rem);
             font-weight: 700;
             background: linear-gradient(45deg, #00f5ff, #ff00f5, #f5ff00, #00f5ff);
             background-size: 400% 400%;
@@ -167,7 +172,7 @@
             animation: gradientShift 3s ease-in-out infinite;
             margin-bottom: 20px;
             text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
-            letter-spacing: 2px; /* Added for better spacing with this font */
+            letter-spacing: 2px;
         }
         
         @keyframes gradientShift {
@@ -184,7 +189,7 @@
         }
         
         .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.8rem);
+            font-size: clamp(1rem, 2.5vw, 1.8rem);
             font-weight: 500;
             margin-bottom: 50px;
             color: #00f5ff;
@@ -563,55 +568,109 @@
             font-size: 1rem;
         }
         
-        /* Responsive Design */
+        /* ======================================= */
+        /* === MOBILE RESPONSIVE STYLES START ==== */
+        /* ======================================= */
+
         @media (max-width: 768px) {
+            /* Reduce padding and margins for a more compact view */
+            .section {
+                padding: 60px 0;
+            }
+            .section-title {
+                margin-bottom: 50px;
+                font-size: 2rem;
+            }
+            
+            /* Compact About Section */
             .about-content {
                 grid-template-columns: 1fr;
                 gap: 40px;
             }
-            
+            .about-text h3 {
+                font-size: 1.5rem;
+            }
+            .about-text {
+                font-size: 1.1rem;
+            }
             .tech-stats {
-                grid-template-columns: 1fr;
+                gap: 20px;
             }
-            
+
+            /* === HORIZONTAL SCROLLER FOR SKILLS === */
             .skills-grid {
-                grid-template-columns: 1fr;
+                display: flex; /* Change from grid to flex */
+                overflow-x: auto; /* Enable horizontal scrolling */
+                scroll-snap-type: x mandatory; /* Make scrolling snap to cards */
+                gap: 20px;
+                padding: 20px;
+                margin: 0 -20px; /* Counteract container padding to make it edge-to-edge */
+                /* Hide scrollbar */
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
+            }
+            .skills-grid::-webkit-scrollbar {
+                display: none; /* Chrome, Safari and Opera */
+            }
+            .skill-card {
+                flex: 0 0 85%; /* Make each card take up 85% of the width */
+                scroll-snap-align: center; /* Snap cards to the center */
+                padding: 30px;
+            }
+            .skill-card:hover {
+                transform: translateY(0); /* Disable hover effect on mobile */
             }
             
+            /* Compact Contact Info */
             .contact-info {
                 grid-template-columns: 1fr;
+                gap: 15px;
             }
             
             .contact-container,
             .reach-me-container {
                 padding: 50px 30px;
             }
-            
-            .social-buttons {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
+
+            .reach-me-title,
+            .contact-title {
+                font-size: 1.8rem;
+            }
+            .reach-me-text,
+            .contact-text {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
             }
             
+            /* Optimized Social Buttons Layout */
+            .social-buttons {
+                gap: 20px;
+                margin-top: 20px;
+            }
             .social-button {
-                width: 250px;
+                width: 160px;
                 height: 70px;
+                font-size: 1rem;
             }
         }
         
         @media (max-width: 480px) {
             .hero-subtitle {
                 font-size: 0.9rem;
+                line-height: 1.4;
             }
-            
-            .reach-me-title,
-            .contact-title {
-                font-size: 1.8rem;
+            .cta-button {
+                padding: 15px 35px;
+                font-size: 1rem;
             }
-            
-            .reach-me-text,
-            .contact-text {
-                font-size: 1.1rem;
+            .stat-item {
+                padding: 20px;
+            }
+            .stat-number {
+                font-size: 2rem;
+            }
+            .stat-label {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -798,6 +857,7 @@
         function updateAliveCounter() {
             const birthDate = new Date('2000-11-18T00:00:00'); // Vishnu's birth date
             const now = new Date();
+            // Since it's 2025, let's get the time.
             let diff = now.getTime() - birthDate.getTime(); // Difference in milliseconds
 
             // Calculate years
