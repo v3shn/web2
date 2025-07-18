@@ -34,7 +34,6 @@
             padding-top: 50px; 
         }
         
-        /* MODIFIED: Top Bar Layout */
         .top-bar {
             position: fixed;
             top: 0;
@@ -51,7 +50,6 @@
             z-index: 1000;
         }
 
-        /* MODIFIED: Clock Container Style */
         #digital-clock-container {
             font-family: 'Rajdhani', sans-serif; 
             color: #00f5ff;
@@ -59,22 +57,20 @@
             font-weight: 600;
             letter-spacing: 1.5px; 
             text-shadow: 0 0 6px rgba(0, 245, 255, 0.6);
-            /* NEW: Prevents text wrapping on shrink */
             white-space: nowrap; 
         }
         
-        /* NEW: Styles for responsive clock parts */
-        .time-short { display: none; } /* Hidden on desktop by default */
-        .time-full, .clock-date, .clock-separator { display: inline; } /* Shown on desktop by default */
+        .time-short { display: none; }
+        .time-full, .clock-date, .clock-separator { display: inline; }
         
 
         /* =========================================== */
-        /* === Signal Indicator Styles Start ==== */
+        /* === MODIFIED: Signal Indicator Styles ==== */
         /* =========================================== */
         .signal-indicator {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px; /* Adjusted gap */
             font-family: 'Rajdhani', sans-serif;
             font-weight: 600;
             color: #00f5ff;
@@ -89,6 +85,38 @@
         .network-type {
             letter-spacing: 1px;
         }
+        
+        /* NEW: Network Activity (Speed & Arrows) */
+        .network-activity {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .speed-unit {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+        .activity-icon {
+            font-weight: 700;
+            letter-spacing: -2px;
+        }
+        .arrow-up {
+            animation: blink-up 1.5s infinite ease-in-out;
+        }
+        .arrow-down {
+            animation: blink-down 1.1s infinite ease-in-out;
+            margin-left: -4px; /* Tighten spacing */
+        }
+
+        @keyframes blink-up {
+            0%, 40%, 100% { opacity: 0.3; }
+            80% { opacity: 1; }
+        }
+        @keyframes blink-down {
+            0%, 60%, 100% { opacity: 1; }
+            30% { opacity: 0.3; }
+        }
+        
         .signal-bars {
             display: flex;
             align-items: flex-end;
@@ -669,11 +697,15 @@
                 padding: 8px 15px;
             }
 
-            /* NEW: Shorten clock on smaller screens */
             .time-short { display: inline; }
             .time-full { display: none; }
             .clock-date { display: none; }
             .clock-separator { display: none; }
+            
+            /* NEW: Hide speed on medium screens */
+            #speed-display, .speed-unit {
+                display: none;
+            }
 
             .section {
                 padding: 60px 0;
@@ -794,6 +826,13 @@
         <div class="signal-indicator">
             <span class="roaming-symbol">R</span>
             <span class="network-type">5G</span>
+            <div class="network-activity">
+                <span id="speed-display"></span>
+                <span class="speed-unit">Mbps</span>
+                <span class="activity-icon">
+                    <span class="arrow-up">↑</span><span class="arrow-down">↓</span>
+                </span>
+            </div>
             <div class="signal-bars">
                 <div class="bar"></div>
                 <div class="bar"></div>
@@ -981,7 +1020,6 @@
     </section>
 
     <script>
-        // ========= MODIFIED: Responsive Indian Standard Time Clock =========
         function updateIndianTime() {
             const now = new Date();
             const options = {
@@ -1007,18 +1045,15 @@
                 }
             });
             
-            // Select the new span elements
             const dateEl = document.querySelector('.clock-date');
             const timeFullEl = document.querySelector('.time-full');
             const timeShortEl = document.querySelector('.time-short');
 
             if(dateEl && timeFullEl && timeShortEl) {
-                // Format the different string versions
                 const dateStr = `${dateParts.day}-${dateParts.month}-${dateParts.year}`;
                 const timeFullStr = `${dateParts.hour}:${dateParts.minute}:${dateParts.second} ${dateParts.dayPeriod}`;
                 const timeShortStr = `${dateParts.hour}:${dateParts.minute} ${dateParts.dayPeriod}`;
 
-                // Update the content of each span
                 dateEl.textContent = dateStr;
                 timeFullEl.textContent = timeFullStr;
                 timeShortEl.textContent = timeShortStr;
@@ -1028,7 +1063,6 @@
         setInterval(updateIndianTime, 1000);
         updateIndianTime();
 
-        // Dynamic alive counter
         function updateAliveCounter() {
             const birthDate = new Date('2000-11-18T00:00:00');
             const now = new Date();
@@ -1058,7 +1092,6 @@
         setInterval(updateAliveCounter, 1000);
         updateAliveCounter();
         
-        // Dynamic Signal Indicator Script
         function updateSignalStrength() {
             const bars = document.querySelectorAll('.signal-indicator .bar');
             const strength = Math.floor(Math.random() * 5) + 1; 
@@ -1074,6 +1107,19 @@
 
         setInterval(updateSignalStrength, 3000);
         updateSignalStrength();
+
+        // NEW: Dynamic Internet Speed Script
+        function updateNetworkSpeed() {
+            const speedEl = document.getElementById('speed-display');
+            if (speedEl) {
+                // Simulate a 5G speed between 45.0 and 250.0 Mbps
+                const speed = (Math.random() * (250 - 45) + 45).toFixed(1);
+                speedEl.textContent = speed;
+            }
+        }
+        setInterval(updateNetworkSpeed, 2500); // Update every 2.5 seconds
+        updateNetworkSpeed();
+
     </script>
 </body>
 </html>
