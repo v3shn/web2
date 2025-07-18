@@ -32,6 +32,7 @@
             color: #fff;
             overflow-x: hidden;
             position: relative;
+            padding-top: 60px; /* Added padding to prevent content from hiding behind the fixed top bar */
         }
         
         /* New Top Bar for the Clock */
@@ -607,6 +608,13 @@
         /* ======================================= */
 
         @media (max-width: 768px) {
+            body {
+                padding-top: 50px; /* Adjust padding for smaller screens */
+            }
+            .top-bar {
+                padding: 5px 10px;
+            }
+
             /* Reduce padding and margins for a more compact view */
             .section {
                 padding: 60px 0;
@@ -710,6 +718,9 @@
     </style>
 </head>
 <body>
+    <div class="top-bar">
+        <div id="digital-clock-container"></div>
+    </div>
     <div class="tech-background"></div>
     
     <div class="circuit-lines">
@@ -887,6 +898,45 @@
     </section>
 
     <script>
+        // ========= NEW: Indian Standard Time Clock =========
+        function updateIndianTime() {
+            const now = new Date();
+            const options = {
+                timeZone: 'Asia/Kolkata',
+                hour12: false,
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+
+            const formatter = new Intl.DateTimeFormat('en-GB', options);
+            const parts = formatter.formatToParts(now);
+
+            const dateParts = {};
+            parts.forEach(part => {
+                dateParts[part.type] = part.value;
+            });
+            
+            // Format as DD-MM-YYYY | HH:MM:SS IST
+            const dateStr = `${dateParts.day}-${dateParts.month}-${dateParts.year}`;
+            const timeStr = `${dateParts.hour}:${dateParts.minute}:${dateParts.second}`;
+
+            const clockElement = document.getElementById('digital-clock-container');
+            if (clockElement) {
+                clockElement.textContent = `${dateStr} | ${timeStr} IST`;
+            }
+        }
+
+        // Update the clock every second
+        setInterval(updateIndianTime, 1000);
+        // Initial call to display immediately
+        updateIndianTime();
+        // ========================================================
+
+
         // Dynamic alive counter with yr mm dd hh mm ss format
         function updateAliveCounter() {
             const birthDate = new Date('2000-11-18T00:00:00'); // Vishnu's birth date
