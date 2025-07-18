@@ -6,8 +6,16 @@
     <title>Vishnu Prasad | Creative Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
         
+        /* Loading the authentic 7-segment font */
+        @font-face {
+          font-family: 'DSEG7';
+          src: url('https://cdn.jsdelivr.net/gh/keshikan/DSEG@main/fonts/DSEG7Classic-Bold.woff2') format('woff2');
+          font-weight: bold;
+          font-style: normal;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -26,6 +34,32 @@
             position: relative;
         }
         
+        /* New Top Bar for the Clock */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+            z-index: 1000;
+        }
+
+        #digital-clock-container {
+            font-family: 'DSEG7', monospace; /* Applying the 7-segment font */
+            color: #00f5ff;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.7), 0 0 20px rgba(0, 245, 255, 0.5);
+        }
+
         /* Animated Tech Background */
         .tech-background {
             position: fixed;
@@ -158,9 +192,6 @@
             text-align: center;
             z-index: 2;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
         
         .hero-name {
@@ -192,21 +223,12 @@
         }
         
         .hero-subtitle {
-            font-size: clamp(0.9rem, 2vw, 1.5rem);
+            font-size: clamp(1rem, 2.5vw, 1.8rem);
             font-weight: 500;
+            margin-bottom: 50px;
             color: #00f5ff;
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-bottom: 15px;
-        }
-
-        #digital-clock-container {
-            font-family: 'Orbitron', monospace;
-            color: #00f5ff;
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            letter-spacing: 3px;
-            text-shadow: 0 0 8px rgba(0, 245, 255, 0.7), 0 0 15px rgba(0, 245, 255, 0.5);
-            margin-bottom: 40px;
         }
         
         .cta-button {
@@ -667,12 +689,8 @@
         }
         
         @media (max-width: 480px) {
-            #digital-clock-container {
-                font-size: 1rem;
-                line-height: 1.4;
-            }
             .hero-subtitle {
-                font-size: 0.8rem;
+                font-size: 0.9rem;
                 line-height: 1.4;
             }
             .cta-button {
@@ -726,10 +744,7 @@
         <div class="hero-container">
             <h1 class="hero-name glitch" data-text="VISHNU PRASAD">VISHNU PRASAD</h1>
             <p class="hero-title">Creative Engineer • Tech Innovator</p>
-            <p class="hero-subtitle" id="aliveCounter"></p>
-            <div id="digital-clock-container">
-                <span id="time"></span> &nbsp;|&nbsp; <span id="date"></span>
-            </div>
+            <p class="hero-subtitle" id="aliveCounter">Alive Since : 18-11-2000</p>
             <a href="#reach-me" class="cta-button">Reach Me</a>
         </div>
     </header>
@@ -872,70 +887,44 @@
     </section>
 
     <script>
+        // Dynamic alive counter with yr mm dd hh mm ss format
         function updateAliveCounter() {
-            const birthDate = new Date('2000-11-18T00:00:00');
+            const birthDate = new Date('2000-11-18T00:00:00'); // Vishnu's birth date
             const now = new Date();
-            let diff = now.getTime() - birthDate.getTime();
+            let diff = now.getTime() - birthDate.getTime(); // Difference in milliseconds
 
+            // Calculate years
             const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
             diff %= (1000 * 60 * 60 * 24 * 365.25);
+
+            // Calculate months
             const months = Math.floor(diff / (1000 * 60 * 60 * 24 * (365.25 / 12)));
             diff %= (1000 * 60 * 60 * 24 * (365.25 / 12));
+
+            // Calculate days
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             diff %= (1000 * 60 * 60 * 24);
+
+            // Calculate hours
             const hours = Math.floor(diff / (1000 * 60 * 60));
             diff %= (1000 * 60 * 60);
+
+            // Calculate minutes
             const minutes = Math.floor(diff / (1000 * 60));
             diff %= (1000 * 60);
+
+            // Calculate seconds
             const seconds = Math.floor(diff / 1000);
 
             const counterElement = document.getElementById('aliveCounter');
-            // This is the corrected line to show the dynamic count
             counterElement.textContent = `Alive Since: ${years}y ${months}m ${days}d ${hours}h ${minutes}min ${seconds}s`;
         }
 
-        function updateDigitalClock() {
-            // Options to format the date to Indian Standard Time (IST)
-            const options = {
-                timeZone: 'Asia/Kolkata',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour12: true,
-            };
+        // Update the counter every second
+        setInterval(updateAliveCounter, 1000);
 
-            // Create a formatter and get the parts
-            const formatter = new Intl.DateTimeFormat('en-GB', options);
-            const parts = formatter.formatToParts(new Date());
-
-            let timeString = '';
-            let dateString = '';
-
-            const partMap = {};
-            for (const part of parts) {
-                partMap[part.type] = part.value;
-            }
-
-            timeString = `${partMap.hour}:${partMap.minute}:${partMap.second} ${partMap.dayPeriod.toUpperCase()}`;
-            dateString = `${partMap.day}/${partMap.month}/${partMap.year}`;
-
-            document.getElementById('time').textContent = timeString;
-            document.getElementById('date').textContent = dateString;
-        }
-
-        // Run both functions once immediately to avoid initial delay
+        // Initial call to display the counter immediately
         updateAliveCounter();
-        updateDigitalClock();
-
-        // This is the corrected interval to update BOTH counters every second
-        setInterval(() => {
-            updateAliveCounter();
-            updateDigitalClock();
-        }, 1000);
-
     </script>
 </body>
 </html>
