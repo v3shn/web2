@@ -403,14 +403,15 @@
         .player-controls {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
         .control-btn {
             background: linear-gradient(45deg, #00f5ff, #ff00f5);
             border: none;
             width: 50px;
             height: 50px;
-            border-radius: 50%;
+            border-radius: 50%; /* This is the key property for a round shape */
+            flex-shrink: 0; /* Ensures the button doesn't get squished */
             color: #0a0a0a;
             font-size: 1.5rem;
             cursor: pointer;
@@ -437,14 +438,12 @@
             border-radius: 4px;
             box-shadow: 0 0 10px #00f5ff;
         }
-        /* NEW: Styles for time display */
-        .time-container {
-            display: flex;
-            justify-content: space-between;
+        /* NEW: Styles for the combined time display */
+        .time-display {
             font-size: 0.9rem;
             color: #ccc;
-            margin-top: 5px;
-            padding: 0 2px;
+            min-width: 80px; /* Reserve space to prevent layout shifts */
+            text-align: center;
         }
         /* =========================================== */
 
@@ -902,6 +901,16 @@
             .bar {
                 width: 2.5px;
             }
+            /* Make music controls more compact on small screens */
+            .player-controls {
+                flex-wrap: wrap; /* Allow controls to wrap */
+                justify-content: center;
+                gap: 10px;
+            }
+            .progress-container {
+                width: 100%;
+                order: 3; /* Move progress bar to the bottom */
+            }
         }
     </style>
 </head>
@@ -986,14 +995,11 @@
                         <p class="track-artist">Lilas Ikuta / YOASOBI</p>
                     </div>
                     <div class="player-controls">
+                        <span id="time-display" class="time-display">0:00 / 0:00</span>
                         <button id="play-pause-btn" class="control-btn"><i class="fas fa-play"></i></button>
                         <div class="progress-container">
                             <div class="progress-bar" id="progress-bar"></div>
                         </div>
-                    </div>
-                     <div class="time-container">
-                        <span id="current-time">0:00</span>
-                        <span id="total-duration">0:00</span>
                     </div>
                 </div>
                 <audio id="audio-player" src="https://raw.githubusercontent.com/v3shn/web2/main/run.mp3"></audio>
@@ -1260,12 +1266,12 @@
         const playPauseBtn = document.getElementById('play-pause-btn');
         const progressContainer = document.querySelector('.progress-container');
         const progressBar = document.getElementById('progress-bar');
-        // NEW: Get time display elements
-        const currentTimeEl = document.getElementById('current-time');
-        const totalDurationEl = document.getElementById('total-duration');
+        const timeDisplayEl = document.getElementById('time-display');
         
-        // NEW: Helper function to format seconds to MM:SS
+        let formattedDuration = "0:00"; // Variable to hold formatted total time
+
         function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
             const minutes = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
@@ -1283,20 +1289,19 @@
 
         function updateProgress() {
             const { currentTime, duration } = audioPlayer;
-            // Update progress bar
             const progressPercent = (currentTime / duration) * 100;
             progressBar.style.width = `${progressPercent}%`;
 
-            // NEW: Update current time display
-            if (currentTimeEl) {
-                currentTimeEl.textContent = formatTime(currentTime);
+            if (timeDisplayEl) {
+                timeDisplayEl.textContent = `${formatTime(currentTime)} / ${formattedDuration}`;
             }
         }
         
-        // NEW: Function to set total duration once metadata is loaded
         function setDuration() {
-             if (totalDurationEl && audioPlayer.duration) {
-                totalDurationEl.textContent = formatTime(audioPlayer.duration);
+             if (audioPlayer.duration) {
+                formattedDuration = formatTime(audioPlayer.duration);
+                // Also update the initial display
+                timeDisplayEl.textContent = `0:00 / ${formattedDuration}`;
             }
         }
 
@@ -1312,12 +1317,11 @@
 
         playPauseBtn.addEventListener('click', togglePlayPause);
         audioPlayer.addEventListener('timeupdate', updateProgress);
-        // NEW: Event listeners for duration and end of track
         audioPlayer.addEventListener('loadedmetadata', setDuration);
         audioPlayer.addEventListener('ended', () => {
              playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
              progressBar.style.width = '0%';
-             currentTimeEl.textContent = "0:00"; // Reset time
+             timeDisplayEl.textContent = `0:00 / ${formattedDuration}`; // Reset time
         });
         progressContainer.addEventListener('click', setProgress);
         // ===============================================
