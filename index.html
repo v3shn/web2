@@ -410,8 +410,8 @@
             border: none;
             width: 50px;
             height: 50px;
-            border-radius: 50%; /* This is the key property for a round shape */
-            flex-shrink: 0; /* Ensures the button doesn't get squished */
+            border-radius: 50%;
+            flex-shrink: 0;
             color: #0a0a0a;
             font-size: 1.5rem;
             cursor: pointer;
@@ -438,11 +438,10 @@
             border-radius: 4px;
             box-shadow: 0 0 10px #00f5ff;
         }
-        /* NEW: Styles for the combined time display */
         .time-display {
             font-size: 0.9rem;
             color: #ccc;
-            min-width: 80px; /* Reserve space to prevent layout shifts */
+            min-width: 80px;
             text-align: center;
         }
         /* =========================================== */
@@ -911,6 +910,9 @@
                 width: 100%;
                 order: 3; /* Move progress bar to the bottom */
             }
+            .time-display {
+                width: auto;
+            }
         }
     </style>
 </head>
@@ -1012,7 +1014,6 @@
             <h2 class="section-title">About</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <h3>Engineer • Developer • Creator</h3>
                     <p>Hey! I'm <span class="highlight">Vishnu Prasad</span>, a Mechanical Engineering graduate from Carmel Polytechnic College, Alappuzha, originally from Kayamkulam, Kerala, and born in Punalur.</p>
                     <p>I've interned at <span class="highlight">Suzee Hyundai, Tenkasi</span>, bringing real-world automotive experience to my technical arsenal.</p>
                     <p>Currently pursuing <span class="highlight">BSc in Computer Science</span> from IHRD College of Applied Science, Karthikapally, merging my mechanical engineering foundation with cutting-edge digital technologies.</p>
@@ -1268,7 +1269,7 @@
         const progressBar = document.getElementById('progress-bar');
         const timeDisplayEl = document.getElementById('time-display');
         
-        let formattedDuration = "0:00"; // Variable to hold formatted total time
+        let formattedDuration = "0:00";
 
         function formatTime(seconds) {
             if (isNaN(seconds)) return "0:00";
@@ -1300,7 +1301,6 @@
         function setDuration() {
              if (audioPlayer.duration) {
                 formattedDuration = formatTime(audioPlayer.duration);
-                // Also update the initial display
                 timeDisplayEl.textContent = `0:00 / ${formattedDuration}`;
             }
         }
@@ -1321,7 +1321,7 @@
         audioPlayer.addEventListener('ended', () => {
              playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
              progressBar.style.width = '0%';
-             timeDisplayEl.textContent = `0:00 / ${formattedDuration}`; // Reset time
+             timeDisplayEl.textContent = `0:00 / ${formattedDuration}`;
         });
         progressContainer.addEventListener('click', setProgress);
         // ===============================================
