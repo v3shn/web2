@@ -65,7 +65,7 @@
         
 
         /* =========================================== */
-        /* === MODIFIED: Signal Indicator Styles ==== */
+        /* === Signal Indicator Styles ==== */
         /* =========================================== */
         .signal-indicator {
             display: flex;
@@ -91,11 +91,10 @@
             align-items: center;
             gap: 5px;
         }
-        /* MODIFIED: Changed selector from class to ID */
         #speed-unit {
             font-size: 0.8em;
             opacity: 0.8;
-            min-width: 35px; /* Reserve space to prevent layout shifts */
+            min-width: 35px;
         }
         .activity-icon {
             font-weight: 700;
@@ -703,9 +702,7 @@
             .clock-date { display: none; }
             .clock-separator { display: none; }
             
-            #speed-display, #speed-unit {
-                display: none;
-            }
+            /* REMOVED rule that was hiding the speed indicator on mobile */
 
             .section {
                 padding: 60px 0;
@@ -1108,30 +1105,25 @@
         setInterval(updateSignalStrength, 3000);
         updateSignalStrength();
 
-        // MODIFIED: Dynamic Internet Speed Script with Unit Switching
         function updateNetworkSpeed() {
             const speedDisplayEl = document.getElementById('speed-display');
             const speedUnitEl = document.getElementById('speed-unit');
 
             if (speedDisplayEl && speedUnitEl) {
-                // Generate a random speed in KB/s (from 10 KB/s to 30,000 KB/s)
                 const speedInKbs = Math.random() * 29990 + 10; 
 
                 let displaySpeed;
                 let displayUnit;
 
                 if (speedInKbs < 1024) {
-                    // If speed is less than 1 MB/s, show in KB/s
                     displaySpeed = Math.floor(speedInKbs);
                     displayUnit = 'KB/s';
                 } else {
-                    // Otherwise, convert to MB/s
                     const speedInMbs = speedInKbs / 1024;
                     displaySpeed = speedInMbs.toFixed(1);
                     displayUnit = 'MB/s';
                 }
 
-                // Update the elements
                 speedDisplayEl.textContent = displaySpeed;
                 speedUnitEl.textContent = displayUnit;
             }
