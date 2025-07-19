@@ -363,7 +363,7 @@
         }
         
         /* =========================================== */
-        /* === NEW: Music Player Styles ==== */
+        /* === MODIFIED: Music Player Styles ==== */
         /* =========================================== */
         .music-player-card {
             display: flex;
@@ -380,7 +380,7 @@
             width: 120px;
             height: 120px;
             object-fit: cover;
-            flex-shrink: 0; /* Prevents image from shrinking */
+            flex-shrink: 0;
             box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
         }
         .player-content {
@@ -437,8 +437,15 @@
             border-radius: 4px;
             box-shadow: 0 0 10px #00f5ff;
         }
-        /* =========================================== */
-        /* === Music Player Styles End ==== */
+        /* NEW: Styles for time display */
+        .time-container {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 5px;
+            padding: 0 2px;
+        }
         /* =========================================== */
 
         /* About Section */
@@ -789,7 +796,6 @@
                 font-size: 2rem;
             }
 
-            /* NEW: Responsive Music Player */
             .music-player-card {
                 flex-direction: column;
                 text-align: center;
@@ -984,6 +990,10 @@
                         <div class="progress-container">
                             <div class="progress-bar" id="progress-bar"></div>
                         </div>
+                    </div>
+                     <div class="time-container">
+                        <span id="current-time">0:00</span>
+                        <span id="total-duration">0:00</span>
                     </div>
                 </div>
                 <audio id="audio-player" src="https://raw.githubusercontent.com/v3shn/web2/main/run.mp3"></audio>
@@ -1244,13 +1254,23 @@
         updateNetworkSpeed();
 
         // ===============================================
-        // === NEW: Music Player Script ======
+        // === MODIFIED: Music Player Script ======
         // ===============================================
         const audioPlayer = document.getElementById('audio-player');
         const playPauseBtn = document.getElementById('play-pause-btn');
         const progressContainer = document.querySelector('.progress-container');
         const progressBar = document.getElementById('progress-bar');
+        // NEW: Get time display elements
+        const currentTimeEl = document.getElementById('current-time');
+        const totalDurationEl = document.getElementById('total-duration');
         
+        // NEW: Helper function to format seconds to MM:SS
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
         function togglePlayPause() {
             if (audioPlayer.paused) {
                 audioPlayer.play();
@@ -1263,8 +1283,21 @@
 
         function updateProgress() {
             const { currentTime, duration } = audioPlayer;
+            // Update progress bar
             const progressPercent = (currentTime / duration) * 100;
             progressBar.style.width = `${progressPercent}%`;
+
+            // NEW: Update current time display
+            if (currentTimeEl) {
+                currentTimeEl.textContent = formatTime(currentTime);
+            }
+        }
+        
+        // NEW: Function to set total duration once metadata is loaded
+        function setDuration() {
+             if (totalDurationEl && audioPlayer.duration) {
+                totalDurationEl.textContent = formatTime(audioPlayer.duration);
+            }
         }
 
         function setProgress(e) {
@@ -1279,9 +1312,12 @@
 
         playPauseBtn.addEventListener('click', togglePlayPause);
         audioPlayer.addEventListener('timeupdate', updateProgress);
+        // NEW: Event listeners for duration and end of track
+        audioPlayer.addEventListener('loadedmetadata', setDuration);
         audioPlayer.addEventListener('ended', () => {
              playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
              progressBar.style.width = '0%';
+             currentTimeEl.textContent = "0:00"; // Reset time
         });
         progressContainer.addEventListener('click', setProgress);
         // ===============================================
