@@ -63,9 +63,6 @@
         .time-short { display: none; }
         .time-full, .clock-date, .clock-separator { display: inline; }
         
-        /* =========================================== */
-        /* === MODIFIED: Signal Indicator Styles ==== */
-        /* =========================================== */
         .signal-indicator {
             display: flex;
             align-items: center;
@@ -80,7 +77,6 @@
             font-size: clamp(0.9rem, 2.2vw, 1rem);
         }
 
-        /* NEW: Styles for re-added Speed Indicator */
         .speed-display-container {
             display: flex;
             align-items: baseline;
@@ -157,9 +153,7 @@
         .bar.active {
             background-color: #00f5ff;
         }
-        /* ========================================= */
 
-        /* Animated Tech Background */
         .tech-background {
             position: fixed;
             top: 0;
@@ -176,7 +170,6 @@
             100% { filter: hue-rotate(30deg) brightness(1.2); }
         }
         
-        /* Circuit Board Pattern */
         .circuit-lines {
             position: fixed;
             top: 0;
@@ -211,7 +204,6 @@
             100% { transform: translateX(100%); opacity: 0; }
         }
         
-        /* Floating Tech Elements */
         .floating-tech {
             position: fixed;
             top: 0;
@@ -238,7 +230,6 @@
             100% { transform: translate(50px, -100vh) rotate(360deg); opacity: 0; }
         }
         
-        /* Glitch Effect */
         .glitch {
             position: relative;
             display: inline-block;
@@ -276,7 +267,6 @@
             21%, 62% { transform: translate(2px, -2px); }
         }
         
-        /* Header */
         header {
             height: 100vh;
             display: flex;
@@ -352,7 +342,6 @@
             background: linear-gradient(45deg, #ff00f5, #f5ff00);
         }
         
-        /* Section Styles */
         .section {
             padding: 100px 0;
             position: relative;
@@ -458,7 +447,6 @@
             text-align: center;
         }
 
-        /* About Section */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -473,7 +461,7 @@
         }
         
         .about-text p {
-            margin-top: 1.5rem; /* Add margin to space out paragraphs */
+            margin-top: 1.5rem;
         }
         .about-text p:first-child {
             margin-top: 0;
@@ -522,7 +510,6 @@
             letter-spacing: 1px;
         }
         
-        /* Skills Section */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -581,7 +568,6 @@
             font-size: 1.1rem;
         }
         
-        /* Contact Section */
         .contact-container {
             text-align: center;
             background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(255, 0, 245, 0.1));
@@ -657,7 +643,6 @@
             letter-spacing: 1px;
         }
         
-        /* Reach Me Section */
         .reach-me-container {
             text-align: center;
             background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(255, 0, 245, 0.1));
@@ -775,10 +760,6 @@
             font-size: 1rem;
         }
         
-        /* ======================================= */
-        /* === MOBILE RESPONSIVE STYLES START ==== */
-        /* ======================================= */
-
         @media (max-width: 768px) {
             body {
                 padding-top: 45px;
@@ -791,11 +772,6 @@
             .time-full { display: none; }
             .clock-date { display: none; }
             .clock-separator { display: none; }
-
-            /* Hide speed indicator on mobile to prevent crowding */
-            .speed-display-container {
-                display: none;
-            }
 
             .section {
                 padding: 60px 0;
@@ -1232,7 +1208,6 @@
         setInterval(updateSignalStrength, 3000);
         updateSignalStrength();
 
-        // NEW: Re-added Network Speed function
         function updateNetworkSpeed() {
             const speedDisplayEl = document.getElementById('speed-display');
             const speedUnitEl = document.getElementById('speed-unit');
@@ -1259,9 +1234,6 @@
         setInterval(updateNetworkSpeed, 2500);
         updateNetworkSpeed();
 
-        // ===============================================
-        // === Music Player Script ======
-        // ===============================================
         const audioPlayer = document.getElementById('audio-player');
         const playPauseBtn = document.getElementById('play-pause-btn');
         const progressContainer = document.querySelector('.progress-container');
