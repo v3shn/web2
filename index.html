@@ -230,6 +230,19 @@
             100% { transform: translate(50px, -100vh) rotate(360deg); opacity: 0; }
         }
         
+        /* NEW: Audio-reactive shake animation */
+        @keyframes audio-shake {
+            0%, 100% { transform: translate(0, 0) rotate(0); }
+            25% { transform: translate(2px, -2px) rotate(1deg); }
+            50% { transform: translate(-2px, 2px) rotate(-1deg); }
+            75% { transform: translate(2px, 2px) rotate(1deg); }
+        }
+
+        .audio-reactive-shake {
+            /* temporarily override the float animation with this shake */
+            animation: audio-shake 0.3s ease-in-out;
+        }
+        
         .glitch {
             position: relative;
             display: inline-block;
@@ -990,7 +1003,7 @@
                         </div>
                     </div>
                 </div>
-                <audio id="audio-player" src="https://raw.githubusercontent.com/v3shn/web2/main/run.mp3"></audio>
+                <audio id="audio-player" src="https://raw.githubusercontent.com/v3shn/web2/main/run.mp3" crossorigin="anonymous"></audio>
             </div>
         </div>
     </section>
@@ -1170,19 +1183,14 @@
 
             const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
             diff %= (1000 * 60 * 60 * 24 * 365.25);
-
             const months = Math.floor(diff / (1000 * 60 * 60 * 24 * (365.25 / 12)));
             diff %= (1000 * 60 * 60 * 24 * (365.25 / 12));
-
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             diff %= (1000 * 60 * 60 * 24);
-
             const hours = Math.floor(diff / (1000 * 60 * 60));
             diff %= (1000 * 60 * 60);
-
             const minutes = Math.floor(diff / (1000 * 60));
             diff %= (1000 * 60);
-
             const seconds = Math.floor(diff / 1000);
 
             const counterElement = document.getElementById('aliveCounter');
@@ -1214,7 +1222,6 @@
 
             if (speedDisplayEl && speedUnitEl) {
                 const speedInKbs = Math.random() * 29990 + 10; 
-
                 let displaySpeed;
                 let displayUnit;
 
@@ -1226,7 +1233,6 @@
                     displaySpeed = speedInMbs.toFixed(1);
                     displayUnit = 'MB/s';
                 }
-
                 speedDisplayEl.textContent = displaySpeed;
                 speedUnitEl.textContent = displayUnit;
             }
@@ -1234,6 +1240,9 @@
         setInterval(updateNetworkSpeed, 2500);
         updateNetworkSpeed();
 
+        // ===============================================
+        // === MODIFIED: Music Player & Audio Visualizer Scripts ======
+        // ===============================================
         const audioPlayer = document.getElementById('audio-player');
         const playPauseBtn = document.getElementById('play-pause-btn');
         const progressContainer = document.querySelector('.progress-container');
@@ -1241,7 +1250,52 @@
         const timeDisplayEl = document.getElementById('time-display');
         
         let formattedDuration = "0:00";
+        let isAudioContextSetup = false;
+        let audioContext, analyser, sourceNode, frequencyData;
 
+        // Function to set up the Web Audio API
+        function setupAudioVisualizer() {
+            if (isAudioContextSetup) return;
+            
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            sourceNode = audioContext.createMediaElementSource(audioPlayer);
+
+            sourceNode.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            analyser.fftSize = 256;
+            const bufferLength = analyser.frequencyBinCount;
+            frequencyData = new Uint8Array(bufferLength);
+            isAudioContextSetup = true;
+            
+            renderFrame();
+        }
+        
+        // Animation loop for audio reaction
+        let lastBassHit = 0;
+        function renderFrame() {
+            requestAnimationFrame(renderFrame);
+            analyser.getByteFrequencyData(frequencyData);
+
+            // Check bass frequencies (first few bins)
+            const bassLevel = (frequencyData[0] + frequencyData[1] + frequencyData[2]) / 3;
+
+            // Trigger shake on bass hit with a cooldown
+            const now = Date.now();
+            if (bassLevel > 150 && now - lastBassHit > 400) {
+                lastBassHit = now;
+                const techElements = document.querySelectorAll('.tech-element');
+                techElements.forEach(el => {
+                    el.classList.add('audio-reactive-shake');
+                    // Remove class after animation ends to allow it to be re-added
+                    setTimeout(() => {
+                        el.classList.remove('audio-reactive-shake');
+                    }, 300);
+                });
+            }
+        }
+        
         function formatTime(seconds) {
             if (isNaN(seconds)) return "0:00";
             const minutes = Math.floor(seconds / 60);
@@ -1250,7 +1304,11 @@
         }
 
         function togglePlayPause() {
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
             if (audioPlayer.paused) {
+                setupAudioVisualizer(); // Setup on first play
                 audioPlayer.play();
                 playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
             } else {
