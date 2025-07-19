@@ -214,13 +214,11 @@
             pointer-events: none;
         }
         
-        /* MODIFIED: Wrapper now handles floating animation and positioning */
         .tech-element-wrapper {
             position: absolute;
             animation: floatTech 25s infinite linear;
         }
 
-        /* MODIFIED: Inner element just holds the content styles */
         .tech-element {
             font-family: 'Rajdhani', monospace;
             font-size: 14px;
@@ -241,7 +239,6 @@
             75% { transform: translate(2px, 2px) rotate(1deg); }
         }
         
-        /* MODIFIED: Shake class is now applied to the inner element */
         .tech-element.audio-reactive-shake {
             animation: audio-shake 0.3s ease-in-out;
         }
@@ -788,10 +785,8 @@
             .time-full { display: none; }
             .clock-date { display: none; }
             .clock-separator { display: none; }
-            
-            .speed-display-container {
-                display: none;
-            }
+
+            /* REMOVED the rule that hid the speed indicator on mobile */
 
             .section {
                 padding: 60px 0;
@@ -1194,7 +1189,6 @@
             const now = Date.now();
             if (bassLevel > 150 && now - lastBassHit > 400) {
                 lastBassHit = now;
-                // MODIFIED: Select the inner element for shaking
                 const techElements = document.querySelectorAll('.tech-element');
                 techElements.forEach(el => {
                     el.classList.add('audio-reactive-shake');
@@ -1266,7 +1260,7 @@
         progressContainer.addEventListener('click', setProgress);
         
         // (For brevity, the bodies of utility functions are omitted here but are present in the full code block)
-        function updateIndianTime(){const now=new Date,options={timeZone:"Asia/Kolkata",hour12:!0,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"},formatter=new Intl.DateTimeFormat("en-GB",options),parts=formatter.formatToParts(now),dateParts={};parts.forEach(part=>{"dayPeriod"===part.type||"ampm"===part.type?dateParts.dayPeriod=part.value.toUpperCase():dateParts[part.type]=part.value});const dateStr=`${dateParts.day}-${dateParts.month}-${dateParts.year}`,timeStr=`${dateParts.hour}:${dateParts.minute}:${dateParts.second} ${dateParts.dayPeriod}`,clockElement=document.getElementById("digital-clock-container");clockElement&&(clockElement.textContent=`${dateStr} | ${timeStr}`)}
+        function updateIndianTime(){const now=new Date,options={timeZone:"Asia/Kolkata",hour12:!0,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"},formatter=new Intl.DateTimeFormat("en-GB",options),parts=formatter.formatToParts(now),dateParts={};parts.forEach(part=>{"dayPeriod"===part.type||"ampm"===part.type?dateParts.dayPeriod=part.value.toUpperCase():dateParts[part.type]=part.value});const dateStr=`${dateParts.day}-${dateParts.month}-${dateParts.year}`,timeStr=`${dateParts.hour}:${dateParts.minute}:${dateParts.second} ${dateParts.dayPeriod}`,dateEl=document.querySelector(".clock-date"),timeFullEl=document.querySelector(".time-full"),timeShortEl=document.querySelector(".time-short");dateEl&&timeFullEl&&timeShortEl&&(dateEl.textContent=dateStr,timeFullEl.textContent=timeStr,timeShortEl.textContent=`${dateParts.hour}:${dateParts.minute} ${dateParts.dayPeriod}`)}
         function updateAliveCounter(){const birthDate=new Date("2000-11-18T00:00:00"),now=new Date;let diff=now.getTime()-birthDate.getTime();const years=Math.floor(diff/315576e5);diff%=315576e5;const months=Math.floor(diff/26298e5);diff%=26298e5;const days=Math.floor(diff/864e5);diff%=864e5;const hours=Math.floor(diff/36e5);diff%=36e5;const minutes=Math.floor(diff/6e4);diff%=6e4;const seconds=Math.floor(diff/1e3),counterElement=document.getElementById("aliveCounter");counterElement.textContent=`Alive Since: ${years}y ${months}m ${days}d ${hours}h ${minutes}min ${seconds}s`}
         function updateNetworkSpeed(){const speedDisplayEl=document.getElementById("speed-display"),speedUnitEl=document.getElementById("speed-unit");if(speedDisplayEl&&speedUnitEl){const speedInKbs=29990*Math.random()+10;let displaySpeed,displayUnit;speedInKbs<1024?(displaySpeed=Math.floor(speedInKbs),displayUnit="KB/s"):(displaySpeed=(speedInKbs/1024).toFixed(1),displayUnit="MB/s"),speedDisplayEl.textContent=displaySpeed,speedUnitEl.textContent=displayUnit}}
 
