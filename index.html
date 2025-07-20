@@ -132,6 +132,8 @@
             font-size: 0.7em;
             font-weight: 700;
             color: #fff;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.5s ease; /* Smooth transition */
         }
         .signal-bars {
             display: flex;
@@ -459,6 +461,29 @@
             min-width: 80px;
             text-align: center;
         }
+
+        /* --- NEW: Audio Visualizer Styles --- */
+        .audio-visualizer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            height: 60px;
+            margin-top: 15px;
+            gap: 4px;
+        }
+
+        .visualizer-bar {
+            flex-grow: 1;
+            width: 100%;
+            height: 5%; /* Start small */
+            background: linear-gradient(to top, #00f5ff, #ff00f5 150%);
+            box-shadow: 0 0 5px rgba(0, 245, 255, 0.5);
+            border-radius: 2px;
+            transition: height 0.1s ease-out;
+        }
+        /* --- END: Audio Visualizer Styles --- */
+
 
         .about-content {
             display: grid;
@@ -807,6 +832,11 @@
             .track-artist {
                 font-size: 1rem;
             }
+
+            /* --- NEW: Hide visualizer on mobile --- */
+            .audio-visualizer {
+                display: none;
+            }
             
             .about-content {
                 grid-template-columns: 1fr;
@@ -1004,6 +1034,7 @@
                             <div class="progress-bar" id="progress-bar"></div>
                         </div>
                     </div>
+                    <div class="audio-visualizer" id="audio-visualizer"></div>
                 </div>
                 <audio id="audio-player" src="https://raw.githubusercontent.com/v3shn/web2/main/run.mp3" crossorigin="anonymous"></audio>
             </div>
@@ -1135,135 +1166,258 @@
     </section>
 
     <script>
-        // All utility scripts (clock, counter, signal)
-        function updateIndianTime(){/*...*/}
-        function updateAliveCounter(){/*...*/}
-        function updateSignalStrength(){/*...*/}
-        function updateNetworkSpeed(){/*...*/}
+        document.addEventListener('DOMContentLoaded', () => {
 
-        // Set intervals for utility scripts
-        setInterval(updateIndianTime, 1000); updateIndianTime();
-        setInterval(updateAliveCounter, 1000); updateAliveCounter();
-        setInterval(updateSignalStrength, 3000); updateSignalStrength();
-        setInterval(updateNetworkSpeed, 2500); updateNetworkSpeed();
+            // ===============================================
+            // === Utility Scripts ===========================
+            // ===============================================
 
-        // ===============================================
-        // === Music Player & Audio Visualizer Scripts ======
-        // ===============================================
-        const audioPlayer = document.getElementById('audio-player');
-        const playPauseBtn = document.getElementById('play-pause-btn');
-        const progressContainer = document.querySelector('.progress-container');
-        const progressBar = document.getElementById('progress-bar');
-        const timeDisplayEl = document.getElementById('time-display');
-        
-        let formattedDuration = "0:00";
-        let isAudioContextSetup = false;
-        let audioContext, analyser, sourceNode, frequencyData;
-
-        function setupAudioVisualizer() {
-            if (isAudioContextSetup) return;
-            
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            analyser = audioContext.createAnalyser();
-            sourceNode = audioContext.createMediaElementSource(audioPlayer);
-
-            sourceNode.connect(analyser);
-            analyser.connect(audioContext.destination);
-
-            analyser.fftSize = 256;
-            const bufferLength = analyser.frequencyBinCount;
-            frequencyData = new Uint8Array(bufferLength);
-            isAudioContextSetup = true;
-            
-            renderFrame();
-        }
-        
-        let lastBassHit = 0;
-        function renderFrame() {
-            requestAnimationFrame(renderFrame);
-            if (!analyser) return;
-            analyser.getByteFrequencyData(frequencyData);
-
-            const bassLevel = (frequencyData[0] + frequencyData[1] + frequencyData[2]) / 3;
-
-            const now = Date.now();
-            if (bassLevel > 150 && now - lastBassHit > 400) {
-                lastBassHit = now;
-                const techElements = document.querySelectorAll('.tech-element');
-                techElements.forEach(el => {
-                    el.classList.add('audio-reactive-shake');
-                    setTimeout(() => {
-                        el.classList.remove('audio-reactive-shake');
-                    }, 300);
+            function updateIndianTime() {
+                const now = new Date();
+                const options = {
+                    timeZone: "Asia/Kolkata",
+                    hour12: true,
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                };
+                const formatter = new Intl.DateTimeFormat('en-GB', options);
+                const parts = formatter.formatToParts(now);
+                const dateParts = {};
+                parts.forEach(part => {
+                    if (part.type === 'dayPeriod' || part.type === 'ampm') {
+                        dateParts.dayPeriod = part.value.toUpperCase();
+                    } else {
+                        dateParts[part.type] = part.value;
+                    }
                 });
-            }
-        }
-        
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "0:00";
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-        }
 
-        function togglePlayPause() {
-            if (!isAudioContextSetup) {
-                setupAudioVisualizer();
-            }
-            if (audioContext && audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            } else {
-                audioPlayer.pause();
-                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-            }
-        }
+                const dateStr = `${dateParts.day}-${dateParts.month}-${dateParts.year}`;
+                const timeStr = `${dateParts.hour}:${dateParts.minute}:${dateParts.second} ${dateParts.dayPeriod}`;
+                
+                const dateEl = document.querySelector(".clock-date");
+                const timeFullEl = document.querySelector(".time-full");
+                const timeShortEl = document.querySelector(".time-short");
 
-        function updateProgress() {
-            const { currentTime, duration } = audioPlayer;
-            const progressPercent = (currentTime / duration) * 100;
-            progressBar.style.width = `${progressPercent}%`;
-
-            if (timeDisplayEl) {
-                timeDisplayEl.textContent = `${formatTime(currentTime)} / ${formattedDuration}`;
+                if (dateEl && timeFullEl && timeShortEl) {
+                    dateEl.textContent = dateStr;
+                    timeFullEl.textContent = timeStr;
+                    timeShortEl.textContent = `${dateParts.hour}:${dateParts.minute} ${dateParts.dayPeriod}`;
+                }
             }
-        }
-        
-        function setDuration() {
-             if (audioPlayer.duration) {
-                formattedDuration = formatTime(audioPlayer.duration);
-                timeDisplayEl.textContent = `0:00 / ${formattedDuration}`;
+
+            function updateAliveCounter() {
+                const birthDate = new Date("2000-11-18T00:00:00");
+                const now = new Date();
+                let diff = now.getTime() - birthDate.getTime();
+                const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+                diff %= (1000 * 60 * 60 * 24 * 365.25);
+                const months = Math.floor(diff / (1000 * 60 * 60 * 24 * (365.25 / 12)));
+                diff %= (1000 * 60 * 60 * 24 * (365.25 / 12));
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                diff %= (1000 * 60 * 60 * 24);
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                diff %= (1000 * 60 * 60);
+                const minutes = Math.floor(diff / (1000 * 60));
+                diff %= (1000 * 60);
+                const seconds = Math.floor(diff / 1000);
+                const counterElement = document.getElementById("aliveCounter");
+                if(counterElement) {
+                    counterElement.textContent = `Alive Since: ${years}y ${months}m ${days}d ${hours}h ${minutes}min ${seconds}s`;
+                }
             }
-        }
 
-        function setProgress(e) {
-            const width = this.clientWidth;
-            const clickX = e.offsetX;
-            const duration = audioPlayer.duration;
+            // --- FIXED: Dynamic Signal Strength ---
+            function updateSignalStrength() {
+                const bars = document.querySelectorAll('.signal-bars .bar');
+                const roamingSymbol = document.querySelector('.roaming-symbol');
 
-            if (duration) {
-                audioPlayer.currentTime = (clickX / width) * duration;
+                if (bars.length > 0) {
+                    const strength = Math.floor(Math.random() * 5); // Random strength from 0 to 4
+                    bars.forEach((bar, index) => {
+                        if (index < strength) {
+                            bar.classList.add('active');
+                        } else {
+                            bar.classList.remove('active');
+                        }
+                    });
+                }
+                
+                if (roamingSymbol) {
+                    // Randomly show the roaming symbol about 20% of the time
+                    roamingSymbol.style.opacity = Math.random() < 0.2 ? '1' : '0';
+                }
             }
-        }
 
-        playPauseBtn.addEventListener('click', togglePlayPause);
-        audioPlayer.addEventListener('timeupdate', updateProgress);
-        audioPlayer.addEventListener('loadedmetadata', setDuration);
-        audioPlayer.addEventListener('ended', () => {
-             playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-             progressBar.style.width = '0%';
-             timeDisplayEl.textContent = `0:00 / ${formattedDuration}`;
+
+            function updateNetworkSpeed() {
+                const speedDisplayEl = document.getElementById('speed-display');
+                const speedUnitEl = document.getElementById('speed-unit');
+                if (speedDisplayEl && speedUnitEl) {
+                    const speedInKbs = (Math.random() * 29990) + 10;
+                    let displaySpeed;
+                    let displayUnit;
+                    if (speedInKbs < 1024) {
+                        displaySpeed = Math.floor(speedInKbs);
+                        displayUnit = "KB/s";
+                    } else {
+                        displaySpeed = (speedInKbs / 1024).toFixed(1);
+                        displayUnit = "MB/s";
+                    }
+                    speedDisplayEl.textContent = displaySpeed;
+                    speedUnitEl.textContent = displayUnit;
+                }
+            }
+
+            // Set intervals for utility scripts
+            setInterval(updateIndianTime, 1000);
+            updateIndianTime();
+            setInterval(updateAliveCounter, 1000);
+            updateAliveCounter();
+            setInterval(updateSignalStrength, 3000);
+            updateSignalStrength();
+            setInterval(updateNetworkSpeed, 2500);
+            updateNetworkSpeed();
+
+            // ===============================================
+            // === Music Player & Audio Visualizer Scripts ===
+            // ===============================================
+            const audioPlayer = document.getElementById('audio-player');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const progressContainer = document.querySelector('.progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const timeDisplayEl = document.getElementById('time-display');
+            const visualizerContainer = document.getElementById('audio-visualizer');
+
+            let formattedDuration = "0:00";
+            let isAudioContextSetup = false;
+            let audioContext, analyser, sourceNode, frequencyData;
+            
+            // --- NEW: Create visualizer bars ---
+            if (visualizerContainer) {
+                const numBars = 32;
+                for (let i = 0; i < numBars; i++) {
+                    const bar = document.createElement('div');
+                    bar.classList.add('visualizer-bar');
+                    visualizerContainer.appendChild(bar);
+                }
+            }
+
+
+            function setupAudioVisualizer() {
+                if (isAudioContextSetup) return;
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                sourceNode = audioContext.createMediaElementSource(audioPlayer);
+
+                sourceNode.connect(analyser);
+                analyser.connect(audioContext.destination);
+
+                analyser.fftSize = 128; // Reduced for better visual response with 32 bars
+                const bufferLength = analyser.frequencyBinCount;
+                frequencyData = new Uint8Array(bufferLength);
+                isAudioContextSetup = true;
+                
+                renderFrame();
+            }
+            
+            let lastBassHit = 0;
+            function renderFrame() {
+                requestAnimationFrame(renderFrame);
+                if (!analyser || !isAudioContextSetup) return;
+                
+                analyser.getByteFrequencyData(frequencyData);
+
+                // Update the new visualizer
+                const bars = visualizerContainer.querySelectorAll('.visualizer-bar');
+                if (bars.length > 0) {
+                    for (let i = 0; i < bars.length; i++) {
+                        // Use a logarithmic scale for better distribution
+                        const index = Math.floor(Math.pow(1.08, i)); 
+                        const barHeight = (frequencyData[index] / 255) * 100;
+                        bars[i].style.height = `${Math.max(barHeight, 2)}%`; // Ensure a minimum height of 2%
+                    }
+                }
+
+                // Existing bass shake effect
+                const bassLevel = (frequencyData[0] + frequencyData[1] + frequencyData[2]) / 3;
+                const now = Date.now();
+                if (bassLevel > 150 && now - lastBassHit > 400) {
+                    lastBassHit = now;
+                    const techElements = document.querySelectorAll('.tech-element');
+                    techElements.forEach(el => {
+                        el.classList.add('audio-reactive-shake');
+                        setTimeout(() => {
+                            el.classList.remove('audio-reactive-shake');
+                        }, 300);
+                    });
+                }
+            }
+            
+            function formatTime(seconds) {
+                if (isNaN(seconds)) return "0:00";
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            function togglePlayPause() {
+                if (!isAudioContextSetup) {
+                    setupAudioVisualizer();
+                }
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                if (audioPlayer.paused) {
+                    audioPlayer.play();
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    audioPlayer.pause();
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            }
+
+            function updateProgress() {
+                const { currentTime, duration } = audioPlayer;
+                if(duration) {
+                    const progressPercent = (currentTime / duration) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+                    if (timeDisplayEl) {
+                        timeDisplayEl.textContent = `${formatTime(currentTime)} / ${formattedDuration}`;
+                    }
+                }
+            }
+            
+            function setDuration() {
+                 if (audioPlayer.duration) {
+                     formattedDuration = formatTime(audioPlayer.duration);
+                     timeDisplayEl.textContent = `0:00 / ${formattedDuration}`;
+                 }
+            }
+
+            function setProgress(e) {
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audioPlayer.duration;
+                if (duration) {
+                    audioPlayer.currentTime = (clickX / width) * duration;
+                }
+            }
+
+            playPauseBtn.addEventListener('click', togglePlayPause);
+            audioPlayer.addEventListener('timeupdate', updateProgress);
+            audioPlayer.addEventListener('loadedmetadata', setDuration);
+            audioPlayer.addEventListener('ended', () => {
+                 playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                 progressBar.style.width = '0%';
+                 timeDisplayEl.textContent = `0:00 / ${formattedDuration}`;
+            });
+            progressContainer.addEventListener('click', setProgress);
         });
-        progressContainer.addEventListener('click', setProgress);
-        
-        // (For brevity, the bodies of utility functions are omitted here but are present in the full code block)
-        function updateIndianTime(){const now=new Date,options={timeZone:"Asia/Kolkata",hour12:!0,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"},formatter=new Intl.DateTimeFormat("en-GB",options),parts=formatter.formatToParts(now),dateParts={};parts.forEach(part=>{"dayPeriod"===part.type||"ampm"===part.type?dateParts.dayPeriod=part.value.toUpperCase():dateParts[part.type]=part.value});const dateStr=`${dateParts.day}-${dateParts.month}-${dateParts.year}`,timeStr=`${dateParts.hour}:${dateParts.minute}:${dateParts.second} ${dateParts.dayPeriod}`,dateEl=document.querySelector(".clock-date"),timeFullEl=document.querySelector(".time-full"),timeShortEl=document.querySelector(".time-short");dateEl&&timeFullEl&&timeShortEl&&(dateEl.textContent=dateStr,timeFullEl.textContent=timeStr,timeShortEl.textContent=`${dateParts.hour}:${dateParts.minute} ${dateParts.dayPeriod}`)}
-        function updateAliveCounter(){const birthDate=new Date("2000-11-18T00:00:00"),now=new Date;let diff=now.getTime()-birthDate.getTime();const years=Math.floor(diff/315576e5);diff%=315576e5;const months=Math.floor(diff/26298e5);diff%=26298e5;const days=Math.floor(diff/864e5);diff%=864e5;const hours=Math.floor(diff/36e5);diff%=36e5;const minutes=Math.floor(diff/6e4);diff%=6e4;const seconds=Math.floor(diff/1e3),counterElement=document.getElementById("aliveCounter");counterElement.textContent=`Alive Since: ${years}y ${months}m ${days}d ${hours}h ${minutes}min ${seconds}s`}
-        function updateNetworkSpeed(){const speedDisplayEl=document.getElementById("speed-display"),speedUnitEl=document.getElementById("speed-unit");if(speedDisplayEl&&speedUnitEl){const speedInKbs=29990*Math.random()+10;let displaySpeed,displayUnit;speedInKbs<1024?(displaySpeed=Math.floor(speedInKbs),displayUnit="KB/s"):(displaySpeed=(speedInKbs/1024).toFixed(1),displayUnit="MB/s"),speedDisplayEl.textContent=displaySpeed,speedUnitEl.textContent=displayUnit}}
-
     </script>
 </body>
 </html>
