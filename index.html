@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Quiz Competition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Montserrat:wght@400;600;700&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,421 +15,331 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
+            font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
-            background-image: url('https://raw.githubusercontent.com/v3shn/nss/21dd09dfb8054d6aeaa6d8fe2feaaab5241eb1db/National-Service-Scheme-L.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.05;
-            z-index: 0;
-            pointer-events: none;
+        .bg-animated {
+            background: linear-gradient(-45deg, #1e3a8a, #3b82f6, #dc2626, #ef4444);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
         }
 
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 800px;
-            width: 100%;
-            padding: 40px;
-            position: relative;
-            z-index: 1;
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
+        .nss-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
 
-        .logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
+        .floating {
+            animation: float 6s ease-in-out infinite;
         }
 
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
 
-        h1 {
-            color: #2c3e50;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: bold;
+        .glow-text {
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.5),
+                         0 0 80px rgba(255, 255, 255, 0.3);
         }
 
-        .motto {
-            color: #e74c3c;
-            font-size: 1.3em;
-            font-style: italic;
-            margin-bottom: 30px;
+        .card-glow {
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3),
+                        0 20px 60px rgba(0, 0, 0, 0.2);
         }
 
-        .start-screen {
-            text-align: center;
+        .option-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .welcome-screen {
-            text-align: center;
+        .option-hover:hover {
+            transform: translateX(10px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
         }
 
-        .welcome-content {
-            max-width: 100%;
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
-        .start-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 18px 50px;
-            font-size: 1.3em;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-            font-weight: bold;
-        }
-
-        .start-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
-        }
-
-        .quiz-screen {
-            display: none;
-        }
-
-        .timer-bar {
-            width: 100%;
-            height: 8px;
-            background: #ecf0f1;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .timer-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
-            transition: width 0.1s linear;
-            border-radius: 10px;
-        }
-
-        .timer-text {
-            text-align: center;
-            font-size: 1.2em;
-            color: #e74c3c;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .question-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            font-size: 1.1em;
-            color: #7f8c8d;
-        }
-
-        .question {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border-left: 5px solid #667eea;
-            animation: slideInFromLeft 0.6s ease-out;
-        }
-
-        .question-text {
-            font-size: 1.3em;
-            color: #2c3e50;
-            font-weight: 600;
-            line-height: 1.6;
-            animation: fadeInScale 0.8s ease-out;
-        }
-
-        @keyframes slideInFromLeft {
-            0% {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes fadeInScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            100% {
+        @keyframes pulse-ring {
+            0%, 100% {
                 opacity: 1;
                 transform: scale(1);
             }
-        }
-
-        .options {
-            display: grid;
-            gap: 15px;
-        }
-
-        .option {
-            background: white;
-            border: 2px solid #e0e0e0;
-            padding: 18px 25px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.1em;
-            color: #2c3e50;
-            animation: slideInOption 0.5s ease-out forwards;
-            opacity: 0;
-        }
-
-        .option:nth-child(1) {
-            animation-delay: 0.2s;
-        }
-
-        .option:nth-child(2) {
-            animation-delay: 0.3s;
-        }
-
-        .option:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        .option:nth-child(4) {
-            animation-delay: 0.5s;
-        }
-
-        @keyframes slideInOption {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
+            50% {
+                opacity: 0.5;
+                transform: scale(1.1);
             }
-            100% {
+        }
+
+        .slide-in-up {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        .option:hover {
-            border-color: #667eea;
-            background: #f0f3ff;
-            transform: translateX(5px);
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
         }
 
-        .option.disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .result-screen {
-            display: none;
-            text-align: center;
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #ef4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .score-display {
-            font-size: 3em;
-            color: #667eea;
-            margin: 30px 0;
-            font-weight: bold;
-        }
-
-        .result-message {
-            font-size: 1.5em;
-            color: #2c3e50;
-            margin-bottom: 30px;
-        }
-
-        .restart-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.2em;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        .restart-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
-        }
-
-        .popup {
+        .nss-logo-bg {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            z-index: 1000;
-            transition: transform 0.3s ease;
-            text-align: center;
-            min-width: 300px;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background-image: url('https://raw.githubusercontent.com/v3shn/nss/21dd09dfb8054d6aeaa6d8fe2feaaab5241eb1db/National-Service-Scheme-L.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .popup.show {
-            transform: translate(-50%, -50%) scale(1);
+        .shine {
+            position: relative;
+            overflow: hidden;
         }
 
-        .popup-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-        }
-
-        .popup-text {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .popup.correct .popup-icon {
-            color: #27ae60;
-        }
-
-        .popup.incorrect .popup-icon {
-            color: #e74c3c;
-        }
-
-        .overlay {
-            position: fixed;
+        .shine::before {
+            content: '';
+            position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s infinite;
         }
 
-        .overlay.show {
-            display: block;
+        @keyframes shine {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 25px;
-            }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
 
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .motto {
-                font-size: 1.1em;
-            }
-
-            .logo {
-                width: 90px;
-                height: 90px;
-            }
-
-            .question-text {
-                font-size: 1.1em;
-            }
-
-            .option {
-                padding: 15px 20px;
-                font-size: 1em;
-            }
-
-            .start-btn, .restart-btn {
-                padding: 15px 35px;
-                font-size: 1.1em;
-            }
-
-            body::before {
-                width: 300px;
-                height: 300px;
-            }
+        .admin-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
         }
     </style>
 </head>
-<body>
-    <div class="overlay" id="overlay"></div>
-    <div class="popup" id="popup">
-        <div class="popup-icon" id="popupIcon"></div>
-        <div class="popup-text" id="popupText"></div>
+<body class="bg-animated nss-pattern min-h-screen flex items-center justify-center p-4">
+    <div class="nss-logo-bg"></div>
+
+    <!-- Admin Button (visible on first page only) -->
+    <button id="adminBtn" onclick="showAdminLogin()" 
+            class="admin-btn bg-white bg-opacity-20 backdrop-blur-md text-white font-semibold px-6 py-3 rounded-full hover:bg-opacity-30 transition-all duration-300 shadow-lg">
+        👤 Admin
+    </button>
+
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-70 z-40 hidden transition-opacity duration-300"></div>
+
+    <!-- Popup -->
+    <div id="popup" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl p-12 z-50 text-center min-w-[300px] transform scale-0 transition-transform duration-300 shadow-2xl">
+        <div id="popupIcon" class="text-7xl mb-6"></div>
+        <div id="popupText" class="text-3xl font-bold text-gray-800"></div>
     </div>
 
-    <div class="container">
-        <div class="header">
-            <div class="logo">
-                <img src="https://raw.githubusercontent.com/v3shn/nss/21dd09dfb8054d6aeaa6d8fe2feaaab5241eb1db/National-Service-Scheme-L.png" alt="NSS Logo">
+    <!-- Main Container -->
+    <div class="relative z-10 w-full max-w-5xl">
+        <div class="bg-white bg-opacity-95 backdrop-blur-xl rounded-3xl card-glow p-8 md:p-12">
+            
+            <!-- Header -->
+            <div class="text-center mb-10 fade-in">
+                <div class="floating mb-6">
+                    <img src="https://raw.githubusercontent.com/v3shn/nss/21dd09dfb8054d6aeaa6d8fe2feaaab5241eb1db/National-Service-Scheme-L.png" 
+                         alt="NSS Logo" 
+                         class="w-32 h-32 mx-auto drop-shadow-2xl">
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 glow-text" style="font-family: 'Montserrat', sans-serif;">
+                    <span class="gradient-text">NATIONAL SERVICE SCHEME</span>
+                </h1>
+                <p class="text-2xl md:text-3xl text-red-600 font-semibold italic shine">Not Me But You...</p>
             </div>
-            <h1>NATIONAL SERVICE SCHEME</h1>
-            <div class="motto">Not Me But You...</div>
-        </div>
 
-        <div class="welcome-screen" id="welcomeScreen">
-            <div class="welcome-content">
-                <p style="text-align: justify; line-height: 1.8; margin-bottom: 20px; color: #2c3e50; font-size: 1.05em;">
-                    The National Service Scheme (NSS) is a dynamic, student-centric youth program operating under the Ministry of Youth Affairs & Sports, Government of India. Established in 1969, the fundamental objective of the NSS is to facilitate the development of the student's personality through direct community service. Embracing the motto "Not Me But You", the scheme inspires volunteers to prioritize the well-being of society and understand the community they work with, thereby bridging the gap between the academic campus and the practical realities of the public. This voluntary engagement ensures that NSS volunteers cultivate a deep sense of social responsibility, democratic living, and national integration, essential qualities for future leadership and engaged citizenship.
-                </p>
-                <p style="text-align: justify; line-height: 1.8; margin-bottom: 30px; color: #2c3e50; font-size: 1.05em;">
-                    NSS volunteers actively participate in various community development initiatives, dedicating 120 hours annually to regular activities and also engaging in intensive seven-day special camping programs in adopted villages or urban slums. These activities range from large-scale cleanliness and sanitation drives, blood donation camps, and environmental protection projects like afforestation, to programs focused on literacy, health awareness, and disaster management. Through this hands-on experience, the NSS scheme successfully instills practical skills, empathy, and a strong commitment to selfless service, making a tangible positive impact on the lives of the underprivileged and contributing significantly to the overall progress of the nation.
-                </p>
-                <div style="text-align: center;">
-                    <button class="start-btn" onclick="goToStartScreen()">Next</button>
+            <!-- Welcome Screen -->
+            <div id="welcomeScreen" class="slide-in-up">
+                <div class="space-y-6 mb-8">
+                    <p class="text-gray-700 leading-relaxed text-justify text-base md:text-lg">
+                        The National Service Scheme (NSS) is a dynamic, student-centric youth program operating under the Ministry of Youth Affairs & Sports, Government of India. Established in 1969, the fundamental objective of the NSS is to facilitate the development of the student's personality through direct community service. Embracing the motto "Not Me But You", the scheme inspires volunteers to prioritize the well-being of society and understand the community they work with, thereby bridging the gap between the academic campus and the practical realities of the public. This voluntary engagement ensures that NSS volunteers cultivate a deep sense of social responsibility, democratic living, and national integration, essential qualities for future leadership and engaged citizenship.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed text-justify text-base md:text-lg">
+                        NSS volunteers actively participate in various community development initiatives, dedicating 120 hours annually to regular activities and also engaging in intensive seven-day special camping programs in adopted villages or urban slums. These activities range from large-scale cleanliness and sanitation drives, blood donation camps, and environmental protection projects like afforestation, to programs focused on literacy, health awareness, and disaster management. Through this hands-on experience, the NSS scheme successfully instills practical skills, empathy, and a strong commitment to selfless service, making a tangible positive impact on the lives of the underprivileged and contributing significantly to the overall progress of the nation.
+                    </p>
+                </div>
+                <div class="text-center">
+                    <button onclick="showNameEntry()" 
+                            class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform">
+                        Continue to Quiz
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <div class="start-screen" id="startScreen" style="display: none;">
-            <p style="font-size: 1.2em; color: #555; margin-bottom: 30px;">
-                Test your knowledge about NSS with 10 random questions!
-            </p>
-            <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
-        </div>
+            <!-- Name Entry Screen -->
+            <div id="nameEntryScreen" class="hidden text-center slide-in-up">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Enter Your Details</h2>
+                    <p class="text-xl text-gray-600 mb-8">Please provide your name to begin the quiz</p>
+                </div>
+                <div class="max-w-md mx-auto mb-8">
+                    <input type="text" id="participantName" 
+                           placeholder="Enter your full name" 
+                           class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 transition-all duration-300 shadow-md">
+                    <p id="nameError" class="text-red-500 mt-2 hidden">Please enter your name</p>
+                </div>
+                <button onclick="submitName()" 
+                        class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform">
+                    Start Quiz
+                </button>
+            </div>
 
-        <div class="quiz-screen" id="quizScreen">
-            <div class="timer-bar">
-                <div class="timer-fill" id="timerFill"></div>
+            <!-- Start Screen -->
+            <div id="startScreen" class="hidden text-center slide-in-up">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome, <span id="displayName" class="gradient-text"></span>!</h2>
+                    <p class="text-xl text-gray-600">Answer 10 random questions about NSS and showcase your understanding!</p>
+                </div>
+                <button onclick="startQuiz()" 
+                        class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-2xl px-16 py-5 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform pulse-ring">
+                    Begin Quiz
+                </button>
             </div>
-            <div class="timer-text" id="timerText">Time: 30s</div>
-            <div class="question-info">
-                <span id="questionNumber">Question 1/10</span>
-                <span id="scoreDisplay">Score: 0/10</span>
-            </div>
-            <div class="question">
-                <div class="question-text" id="questionText"></div>
-            </div>
-            <div class="options" id="optionsContainer"></div>
-        </div>
 
-        <div class="result-screen" id="resultScreen">
-            <h2 style="color: #2c3e50; font-size: 2em; margin-bottom: 20px;">Quiz Completed!</h2>
-            <div class="score-display" id="finalScore"></div>
-            <div class="result-message" id="resultMessage"></div>
-            <button class="restart-btn" onclick="restartQuiz()">Try Again</button>
+            <!-- Quiz Screen -->
+            <div id="quizScreen" class="hidden">
+                <!-- Timer Bar -->
+                <div class="mb-6">
+                    <div class="h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                        <div id="timerFill" class="h-full bg-gradient-to-r from-red-500 to-red-700 transition-all duration-100 rounded-full"></div>
+                    </div>
+                    <p id="timerText" class="text-center text-2xl font-bold text-red-600 mt-3">Time: 30s</p>
+                </div>
+
+                <!-- Question Info -->
+                <div class="flex justify-between mb-6 text-lg font-semibold text-gray-600">
+                    <span id="questionNumber">Question 1/10</span>
+                    <span id="scoreDisplay" class="text-blue-600">Score: 0/10</span>
+                </div>
+
+                <!-- Question -->
+                <div class="bg-gradient-to-r from-blue-50 to-red-50 p-8 rounded-2xl mb-8 border-l-4 border-blue-600 shadow-lg slide-in-up">
+                    <p id="questionText" class="text-xl md:text-2xl font-semibold text-gray-800 leading-relaxed"></p>
+                </div>
+
+                <!-- Options -->
+                <div id="optionsContainer" class="space-y-4"></div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="resultScreen" class="hidden text-center slide-in-up">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8">🎉 Quiz Completed! 🎉</h2>
+                <div id="finalScore" class="text-7xl font-extrabold mb-8 gradient-text"></div>
+                <p id="resultMessage" class="text-2xl text-gray-700 mb-10 font-semibold"></p>
+                <button onclick="restartQuiz()" 
+                        class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform">
+                    Try Again
+                </button>
+            </div>
+
+            <!-- Admin Login Screen -->
+            <div id="adminLoginScreen" class="hidden text-center slide-in-up">
+                <div class="mb-8">
+                    <h2 class="text-4xl font-bold mb-6 gradient-text">Admin Panel</h2>
+                    <p class="text-xl text-gray-600 mb-8">Enter password to access admin dashboard</p>
+                </div>
+                <div class="max-w-md mx-auto mb-8">
+                    <input type="password" id="adminPassword" 
+                           placeholder="Enter admin password" 
+                           class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 transition-all duration-300 shadow-md">
+                    <p id="passwordError" class="text-red-500 mt-2 hidden">Incorrect password</p>
+                </div>
+                <div class="flex gap-4 justify-center">
+                    <button onclick="adminLogin()" 
+                            class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform">
+                        Login
+                    </button>
+                    <button onclick="backToWelcome()" 
+                            class="bg-gray-500 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform hover:bg-gray-600">
+                        Back
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard Screen -->
+            <div id="adminDashboard" class="hidden slide-in-up">
+                <div class="mb-8 text-center">
+                    <h2 class="text-4xl font-bold mb-4 gradient-text">Admin Dashboard</h2>
+                    <p class="text-xl text-gray-600">Recent Quiz Participants</p>
+                </div>
+                
+                <div class="mb-6 overflow-x-auto">
+                    <table class="w-full bg-white rounded-xl shadow-lg overflow-hidden">
+                        <thead class="bg-gradient-to-r from-blue-600 to-red-600 text-white">
+                            <tr>
+                                <th class="px-6 py-4 text-left font-semibold">#</th>
+                                <th class="px-6 py-4 text-left font-semibold">Name</th>
+                                <th class="px-6 py-4 text-left font-semibold">Score</th>
+                                <th class="px-6 py-4 text-left font-semibold">Date & Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participantsTable" class="divide-y divide-gray-200">
+                            <!-- Participants will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex gap-4 justify-center">
+                    <button onclick="resetData()" 
+                            class="bg-red-600 text-white font-bold text-lg px-10 py-3 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform hover:bg-red-700">
+                        🗑️ Reset All Data
+                    </button>
+                    <button onclick="backToWelcome()" 
+                            class="bg-gray-500 text-white font-bold text-lg px-10 py-3 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform hover:bg-gray-600">
+                        ← Back to Home
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -490,10 +403,102 @@
         let timer;
         let timeLeft = 30;
         let currentCorrectIndex = 0;
+        let participantName = '';
+        const ADMIN_PASSWORD = 'nexora25';
 
-        function goToStartScreen() {
-            document.getElementById('welcomeScreen').style.display = 'none';
-            document.getElementById('startScreen').style.display = 'block';
+        // Initialize participants data
+        function getParticipants() {
+            const data = JSON.parse(localStorage.getItem('nssParticipants') || '[]');
+            return data;
+        }
+
+        function saveParticipant(name, score) {
+            const participants = getParticipants();
+            const now = new Date();
+            participants.push({
+                name: name,
+                score: score,
+                date: now.toLocaleDateString(),
+                time: now.toLocaleTimeString()
+            });
+            localStorage.setItem('nssParticipants', JSON.stringify(participants));
+        }
+
+        function showNameEntry() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('nameEntryScreen').classList.remove('hidden');
+            document.getElementById('adminBtn').classList.add('hidden');
+        }
+
+        function submitName() {
+            const nameInput = document.getElementById('participantName');
+            const name = nameInput.value.trim();
+            
+            if (name === '') {
+                document.getElementById('nameError').classList.remove('hidden');
+                return;
+            }
+            
+            participantName = name;
+            document.getElementById('nameError').classList.add('hidden');
+            document.getElementById('nameEntryScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+            document.getElementById('displayName').textContent = participantName;
+        }
+
+        function showAdminLogin() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('adminLoginScreen').classList.remove('hidden');
+            document.getElementById('adminBtn').classList.add('hidden');
+        }
+
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            const errorMsg = document.getElementById('passwordError');
+            
+            if (password === ADMIN_PASSWORD) {
+                errorMsg.classList.add('hidden');
+                document.getElementById('adminLoginScreen').classList.add('hidden');
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                loadParticipantsTable();
+            } else {
+                errorMsg.classList.remove('hidden');
+            }
+        }
+
+        function loadParticipantsTable() {
+            const participants = getParticipants();
+            const tbody = document.getElementById('participantsTable');
+            
+            if (participants.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500 text-lg">No participants yet</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = participants.map((p, index) => `
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 font-medium text-gray-900">${index + 1}</td>
+                    <td class="px-6 py-4 text-gray-800">${p.name}</td>
+                    <td class="px-6 py-4 font-bold text-blue-600">${p.score}/10</td>
+                    <td class="px-6 py-4 text-gray-600">${p.date} ${p.time}</td>
+                </tr>
+            `).join('');
+        }
+
+        function resetData() {
+            if (confirm('Are you sure you want to reset all participant data? This action cannot be undone.')) {
+                localStorage.removeItem('nssParticipants');
+                loadParticipantsTable();
+            }
+        }
+
+        function backToWelcome() {
+            document.getElementById('adminLoginScreen').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('adminBtn').classList.remove('hidden');
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('passwordError').classList.add('hidden');
         }
 
         function shuffleArray(array) {
@@ -509,8 +514,8 @@
             currentQuestions = shuffleArray(allQuestions).slice(0, 10);
             currentQuestionIndex = 0;
             score = 0;
-            document.getElementById('startScreen').style.display = 'none';
-            document.getElementById('quizScreen').style.display = 'block';
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
             showQuestion();
         }
 
@@ -528,26 +533,21 @@
             const optionsContainer = document.getElementById('optionsContainer');
             optionsContainer.innerHTML = '';
 
-            // Create array of options with their original indices
             const optionsWithIndices = question.options.map((option, index) => ({
                 text: option,
                 originalIndex: index
             }));
 
-            // Shuffle the options
             const shuffledOptions = shuffleArray(optionsWithIndices);
-
-            // Store the correct answer's new position
             const correctAnswerNewIndex = shuffledOptions.findIndex(
                 opt => opt.originalIndex === question.answer
             );
             
-            // Store for answer checking
             currentCorrectIndex = correctAnswerNewIndex;
 
             shuffledOptions.forEach((option, index) => {
                 const optionDiv = document.createElement('div');
-                optionDiv.className = 'option';
+                optionDiv.className = `option-hover bg-white border-2 border-gray-300 p-5 rounded-xl cursor-pointer text-lg font-medium text-gray-800 shadow-md slide-in-up stagger-${index + 1}`;
                 optionDiv.textContent = option.text;
                 optionDiv.onclick = () => selectAnswer(index);
                 optionsContainer.appendChild(optionDiv);
@@ -566,7 +566,7 @@
                 
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    showPopup(false);
+                    showPopup(false, true);
                     setTimeout(() => {
                         currentQuestionIndex++;
                         showQuestion();
@@ -584,8 +584,11 @@
         function selectAnswer(selectedIndex) {
             clearInterval(timer);
             
-            const options = document.querySelectorAll('.option');
-            options.forEach(opt => opt.classList.add('disabled'));
+            const options = document.querySelectorAll('#optionsContainer > div');
+            options.forEach(opt => {
+                opt.classList.add('opacity-60', 'cursor-not-allowed');
+                opt.onclick = null;
+            });
 
             const isCorrect = selectedIndex === currentCorrectIndex;
 
@@ -593,7 +596,7 @@
                 score++;
             }
 
-            showPopup(isCorrect);
+            showPopup(isCorrect, false);
 
             setTimeout(() => {
                 currentQuestionIndex++;
@@ -601,33 +604,40 @@
             }, 1500);
         }
 
-        function showPopup(isCorrect) {
+        function showPopup(isCorrect, isTimeout) {
             const popup = document.getElementById('popup');
             const overlay = document.getElementById('overlay');
             const icon = document.getElementById('popupIcon');
             const text = document.getElementById('popupText');
 
-            if (isCorrect) {
-                popup.className = 'popup show correct';
+            if (isTimeout) {
+                icon.textContent = '⚠️';
+                icon.style.color = '#f59e0b';
+                text.textContent = 'Timeout!';
+            } else if (isCorrect) {
                 icon.textContent = '✓';
+                icon.style.color = '#10b981';
                 text.textContent = 'Correct!';
             } else {
-                popup.className = 'popup show incorrect';
                 icon.textContent = '✗';
+                icon.style.color = '#ef4444';
                 text.textContent = 'Incorrect!';
             }
 
-            overlay.classList.add('show');
+            overlay.classList.remove('hidden');
+            popup.classList.remove('scale-0');
+            popup.classList.add('scale-100');
 
             setTimeout(() => {
-                popup.classList.remove('show');
-                overlay.classList.remove('show');
+                popup.classList.remove('scale-100');
+                popup.classList.add('scale-0');
+                overlay.classList.add('hidden');
             }, 1200);
         }
 
         function showResults() {
-            document.getElementById('quizScreen').style.display = 'none';
-            document.getElementById('resultScreen').style.display = 'block';
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
             
             document.getElementById('finalScore').textContent = `${score}/10`;
             
@@ -643,12 +653,33 @@
             }
             
             document.getElementById('resultMessage').textContent = message;
+            
+            // Save participant data
+            saveParticipant(participantName, score);
         }
 
         function restartQuiz() {
-            document.getElementById('resultScreen').style.display = 'none';
-            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('adminBtn').classList.remove('hidden');
+            participantName = '';
+            document.getElementById('participantName').value = '';
         }
+
+        // Allow Enter key for name submission
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('participantName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitName();
+                }
+            });
+            
+            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    adminLogin();
+                }
+            });
+        });
     </script>
 </body>
 </html>
