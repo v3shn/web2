@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexora@v3shnss</title>
+    <title>NSS Quiz Competition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Montserrat:wght@400;600;700&display=swap');
@@ -252,7 +252,7 @@
                     <div class="h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
                         <div id="timerFill" class="h-full bg-gradient-to-r from-red-500 to-red-700 transition-all duration-100 rounded-full"></div>
                     </div>
-                    <p id="timerText" class="text-center text-2xl font-bold text-red-600 mt-3">Time: 30s</p>
+                    <p id="timerText" class="text-center text-2xl font-bold text-red-600 mt-3">Time: 10s</p>
                 </div>
 
                 <!-- Question Info -->
@@ -401,7 +401,7 @@
         let currentQuestionIndex = 0;
         let score = 0;
         let timer;
-        let timeLeft = 30;
+        let timeLeft = 10;
         let currentCorrectIndex = 0;
         let participantName = '';
         const ADMIN_PASSWORD = 'nexora25';
@@ -557,7 +557,7 @@
         }
 
         function startTimer() {
-            timeLeft = 30;
+            timeLeft = 10;
             updateTimerDisplay();
             
             timer = setInterval(() => {
@@ -577,7 +577,7 @@
 
         function updateTimerDisplay() {
             document.getElementById('timerText').textContent = `Time: ${timeLeft}s`;
-            const percentage = (timeLeft / 30) * 100;
+            const percentage = (timeLeft / 10) * 100;
             document.getElementById('timerFill').style.width = percentage + '%';
         }
 
