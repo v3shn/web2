@@ -153,23 +153,10 @@
         .stagger-2 { animation-delay: 0.2s; }
         .stagger-3 { animation-delay: 0.3s; }
         .stagger-4 { animation-delay: 0.4s; }
-
-        .admin-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-        }
     </style>
 </head>
 <body class="bg-animated nss-pattern min-h-screen flex items-center justify-center p-4">
     <div class="nss-logo-bg"></div>
-
-    <!-- Admin Button (visible on first page only) -->
-    <button id="adminBtn" onclick="showAdminLogin()" 
-            class="admin-btn bg-white bg-opacity-20 backdrop-blur-md text-white font-semibold px-6 py-3 rounded-full hover:bg-opacity-30 transition-all duration-300 shadow-lg">
-        👤 Admin
-    </button>
 
     <!-- Overlay -->
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-70 z-40 hidden transition-opacity duration-300"></div>
@@ -208,41 +195,11 @@
                     </p>
                 </div>
                 <div class="text-center">
-                    <button onclick="showNameEntry()" 
-                            class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform">
-                        Continue to Quiz
+                    <button onclick="startQuiz()" 
+                            class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform pulse-ring">
+                        Start Quiz
                     </button>
                 </div>
-            </div>
-
-            <!-- Name Entry Screen -->
-            <div id="nameEntryScreen" class="hidden text-center slide-in-up">
-                <div class="mb-8">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Enter Your Details</h2>
-                    <p class="text-xl text-gray-600 mb-8">Please provide your name to begin the quiz</p>
-                </div>
-                <div class="max-w-md mx-auto mb-8">
-                    <input type="text" id="participantName" 
-                           placeholder="Enter your full name" 
-                           class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 transition-all duration-300 shadow-md">
-                    <p id="nameError" class="text-red-500 mt-2 hidden">Please enter your name</p>
-                </div>
-                <button onclick="submitName()" 
-                        class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform">
-                    Start Quiz
-                </button>
-            </div>
-
-            <!-- Start Screen -->
-            <div id="startScreen" class="hidden text-center slide-in-up">
-                <div class="mb-8">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome, <span id="displayName" class="gradient-text"></span>!</h2>
-                    <p class="text-xl text-gray-600">Answer 10 random questions about NSS and showcase your understanding!</p>
-                </div>
-                <button onclick="startQuiz()" 
-                        class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-2xl px-16 py-5 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform pulse-ring">
-                    Begin Quiz
-                </button>
             </div>
 
             <!-- Quiz Screen -->
@@ -279,65 +236,6 @@
                         class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform">
                     Try Again
                 </button>
-            </div>
-
-            <!-- Admin Login Screen -->
-            <div id="adminLoginScreen" class="hidden text-center slide-in-up">
-                <div class="mb-8">
-                    <h2 class="text-4xl font-bold mb-6 gradient-text">Admin Panel</h2>
-                    <p class="text-xl text-gray-600 mb-8">Enter password to access admin dashboard</p>
-                </div>
-                <div class="max-w-md mx-auto mb-8">
-                    <input type="password" id="adminPassword" 
-                           placeholder="Enter admin password" 
-                           class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 transition-all duration-300 shadow-md">
-                    <p id="passwordError" class="text-red-500 mt-2 hidden">Incorrect password</p>
-                </div>
-                <div class="flex gap-4 justify-center">
-                    <button onclick="adminLogin()" 
-                            class="shine bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform">
-                        Login
-                    </button>
-                    <button onclick="backToWelcome()" 
-                            class="bg-gray-500 text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform hover:bg-gray-600">
-                        Back
-                    </button>
-                </div>
-            </div>
-
-            <!-- Admin Dashboard Screen -->
-            <div id="adminDashboard" class="hidden slide-in-up">
-                <div class="mb-8 text-center">
-                    <h2 class="text-4xl font-bold mb-4 gradient-text">Admin Dashboard</h2>
-                    <p class="text-xl text-gray-600">Recent Quiz Participants</p>
-                </div>
-                
-                <div class="mb-6 overflow-x-auto">
-                    <table class="w-full bg-white rounded-xl shadow-lg overflow-hidden">
-                        <thead class="bg-gradient-to-r from-blue-600 to-red-600 text-white">
-                            <tr>
-                                <th class="px-6 py-4 text-left font-semibold">#</th>
-                                <th class="px-6 py-4 text-left font-semibold">Name</th>
-                                <th class="px-6 py-4 text-left font-semibold">Score</th>
-                                <th class="px-6 py-4 text-left font-semibold">Date & Time</th>
-                            </tr>
-                        </thead>
-                        <tbody id="participantsTable" class="divide-y divide-gray-200">
-                            <!-- Participants will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="flex gap-4 justify-center">
-                    <button onclick="resetData()" 
-                            class="bg-red-600 text-white font-bold text-lg px-10 py-3 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform hover:bg-red-700">
-                        🗑️ Reset All Data
-                    </button>
-                    <button onclick="backToWelcome()" 
-                            class="bg-gray-500 text-white font-bold text-lg px-10 py-3 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 transform hover:bg-gray-600">
-                        ← Back to Home
-                    </button>
-                </div>
             </div>
 
         </div>
@@ -403,103 +301,6 @@
         let timer;
         let timeLeft = 10;
         let currentCorrectIndex = 0;
-        let participantName = '';
-        const ADMIN_PASSWORD = 'nexora25';
-
-        // Initialize participants data
-        function getParticipants() {
-            const data = JSON.parse(localStorage.getItem('nssParticipants') || '[]');
-            return data;
-        }
-
-        function saveParticipant(name, score) {
-            const participants = getParticipants();
-            const now = new Date();
-            participants.push({
-                name: name,
-                score: score,
-                date: now.toLocaleDateString(),
-                time: now.toLocaleTimeString()
-            });
-            localStorage.setItem('nssParticipants', JSON.stringify(participants));
-        }
-
-        function showNameEntry() {
-            document.getElementById('welcomeScreen').classList.add('hidden');
-            document.getElementById('nameEntryScreen').classList.remove('hidden');
-            document.getElementById('adminBtn').classList.add('hidden');
-        }
-
-        function submitName() {
-            const nameInput = document.getElementById('participantName');
-            const name = nameInput.value.trim();
-            
-            if (name === '') {
-                document.getElementById('nameError').classList.remove('hidden');
-                return;
-            }
-            
-            participantName = name;
-            document.getElementById('nameError').classList.add('hidden');
-            document.getElementById('nameEntryScreen').classList.add('hidden');
-            document.getElementById('startScreen').classList.remove('hidden');
-            document.getElementById('displayName').textContent = participantName;
-        }
-
-        function showAdminLogin() {
-            document.getElementById('welcomeScreen').classList.add('hidden');
-            document.getElementById('adminLoginScreen').classList.remove('hidden');
-            document.getElementById('adminBtn').classList.add('hidden');
-        }
-
-        function adminLogin() {
-            const password = document.getElementById('adminPassword').value;
-            const errorMsg = document.getElementById('passwordError');
-            
-            if (password === ADMIN_PASSWORD) {
-                errorMsg.classList.add('hidden');
-                document.getElementById('adminLoginScreen').classList.add('hidden');
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                loadParticipantsTable();
-            } else {
-                errorMsg.classList.remove('hidden');
-            }
-        }
-
-        function loadParticipantsTable() {
-            const participants = getParticipants();
-            const tbody = document.getElementById('participantsTable');
-            
-            if (participants.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500 text-lg">No participants yet</td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = participants.map((p, index) => `
-                <tr class="hover:bg-gray-50 transition-colors">
-                    <td class="px-6 py-4 font-medium text-gray-900">${index + 1}</td>
-                    <td class="px-6 py-4 text-gray-800">${p.name}</td>
-                    <td class="px-6 py-4 font-bold text-blue-600">${p.score}/10</td>
-                    <td class="px-6 py-4 text-gray-600">${p.date} ${p.time}</td>
-                </tr>
-            `).join('');
-        }
-
-        function resetData() {
-            if (confirm('Are you sure you want to reset all participant data? This action cannot be undone.')) {
-                localStorage.removeItem('nssParticipants');
-                loadParticipantsTable();
-            }
-        }
-
-        function backToWelcome() {
-            document.getElementById('adminLoginScreen').classList.add('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
-            document.getElementById('welcomeScreen').classList.remove('hidden');
-            document.getElementById('adminBtn').classList.remove('hidden');
-            document.getElementById('adminPassword').value = '';
-            document.getElementById('passwordError').classList.add('hidden');
-        }
 
         function shuffleArray(array) {
             const newArray = [...array];
@@ -514,7 +315,7 @@
             currentQuestions = shuffleArray(allQuestions).slice(0, 10);
             currentQuestionIndex = 0;
             score = 0;
-            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('welcomeScreen').classList.add('hidden');
             document.getElementById('quizScreen').classList.remove('hidden');
             showQuestion();
         }
@@ -653,33 +454,12 @@
             }
             
             document.getElementById('resultMessage').textContent = message;
-            
-            // Save participant data
-            saveParticipant(participantName, score);
         }
 
         function restartQuiz() {
             document.getElementById('resultScreen').classList.add('hidden');
             document.getElementById('welcomeScreen').classList.remove('hidden');
-            document.getElementById('adminBtn').classList.remove('hidden');
-            participantName = '';
-            document.getElementById('participantName').value = '';
         }
-
-        // Allow Enter key for name submission
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('participantName').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    submitName();
-                }
-            });
-            
-            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    adminLogin();
-                }
-            });
-        });
     </script>
 </body>
 </html>
