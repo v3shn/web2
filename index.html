@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexora@v3shnss</title>
+    <title>NSS Quiz Competition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Montserrat:wght@400;600;700&display=swap');
@@ -367,11 +367,24 @@
                 
                 if (timeLeft <= 0) {
                     clearInterval(timer);
+                    
+                    // Highlight correct answer when timeout
+                    const options = document.querySelectorAll('#optionsContainer > div');
+                    options.forEach((opt, index) => {
+                        opt.classList.add('cursor-not-allowed');
+                        opt.onclick = null;
+                        
+                        if (index === currentCorrectIndex) {
+                            opt.classList.remove('border-gray-300');
+                            opt.classList.add('border-green-500', 'bg-green-100', 'border-4');
+                        }
+                    });
+                    
                     showPopup(false, true);
                     setTimeout(() => {
                         currentQuestionIndex++;
                         showQuestion();
-                    }, 1500);
+                    }, 2000);
                 }
             }, 1000);
         }
@@ -386,23 +399,35 @@
             clearInterval(timer);
             
             const options = document.querySelectorAll('#optionsContainer > div');
-            options.forEach(opt => {
-                opt.classList.add('opacity-60', 'cursor-not-allowed');
-                opt.onclick = null;
-            });
-
             const isCorrect = selectedIndex === currentCorrectIndex;
+
+            // Disable all options
+            options.forEach((opt, index) => {
+                opt.classList.add('cursor-not-allowed');
+                opt.onclick = null;
+                
+                // Highlight correct answer in green
+                if (index === currentCorrectIndex) {
+                    opt.classList.remove('border-gray-300');
+                    opt.classList.add('border-green-500', 'bg-green-100', 'border-4');
+                }
+                
+                // Highlight wrong answer in red (if user selected wrong)
+                if (index === selectedIndex && !isCorrect) {
+                    opt.classList.remove('border-gray-300');
+                    opt.classList.add('border-red-500', 'bg-red-100', 'border-4');
+                }
+            });
 
             if (isCorrect) {
                 score++;
+                showPopup(true, false);
             }
-
-            showPopup(isCorrect, false);
 
             setTimeout(() => {
                 currentQuestionIndex++;
                 showQuestion();
-            }, 1500);
+            }, 2000);
         }
 
         function showPopup(isCorrect, isTimeout) {
